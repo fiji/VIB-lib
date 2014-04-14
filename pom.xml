@@ -76,6 +76,11 @@
 		</plugins>
 	</build>
 
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://jenkins.imagej.net/job/VIB-lib/</url>
+	</ciManagement>
+
 	<scm>
 		<connection>scm:git:git://github.com/fiji/VIB-lib</connection>
 		<developerConnection>scm:git:git@github.com:fiji/VIB-lib</developerConnection>
