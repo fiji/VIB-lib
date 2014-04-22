@@ -333,7 +333,7 @@ public class FindConnectedRegions {
 
 			if( ! noUI ) {
 				cancelDialog=new CancelDialog(this);
-				cancelDialog.show();
+				cancelDialog.setVisible(true);
 			}
 
 			boolean firstTime = true;
