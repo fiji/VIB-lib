@@ -468,7 +468,6 @@ public class FindConnectedRegions {
 				firstTime = false;
 
 				int vint = foundValueInt;
-				float vfloat = foundValueFloat;
 
 				String materialName = null;
 				if (materialList != null) {
