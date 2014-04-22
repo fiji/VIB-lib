@@ -96,7 +96,7 @@ public class FindConnectedRegions {
 	}
 
 	/* An inner class to make the results list sortable. */
-	public class Region implements Comparable {
+	public class Region implements Comparable<Region> {
 
 		Region(int value, String materialName, int points, boolean sameValue) {
 			byteImage = true;
@@ -126,8 +126,7 @@ public class FindConnectedRegions {
 		int value;
 		boolean sameValue;
 
-		public int compareTo(Object otherRegion) {
-			Region o = (Region) otherRegion;
+		public int compareTo(Region o) {
 			return (points < o.points) ? -1 : ((points > o.points) ? 1 : 0);
 		}
 
