@@ -340,8 +340,8 @@ public class FindConnectedRegions {
 
 			int regionNumber = 0;
 
-			int numberOfPointsInStack = width * height * depth;
-			byte[] pointState = new byte[numberOfPointsInStack];
+			long numberOfPointsInStack = (long) width * height * depth;
+			PointState pointState = new PointState(numberOfPointsInStack);
 
 			int ignoreBeforeX = 0;
 			int ignoreBeforeY = 0;
@@ -398,7 +398,8 @@ public class FindConnectedRegions {
 						for (int y = startY; y < height && ! foundPoint; ++y) {
 							int startX = (z == ignoreBeforeZ && y == ignoreBeforeY) ? ignoreBeforeX : 0;
 							for (int x = startX; x < width; ++x) {
-								if( IN_PREVIOUS_REGION == pointState[ width * (z * height + y) + x ] )
+								long index = (long) width * (z * height + y) + x;
+								if( IN_PREVIOUS_REGION == pointState.get( index ) )
 									continue;
 								int value = sliceDataBytes[z][y * width + x] & 0xFF;
 								if (value > valuesOverDouble) {
@@ -431,7 +432,8 @@ public class FindConnectedRegions {
 						for (int y = startY; y < height && ! foundPoint; ++y) {
 							int startX = (z == ignoreBeforeZ && y == ignoreBeforeY) ? ignoreBeforeX : 0;
 							for (int x = startX; x < width; ++x) {
-								if( IN_PREVIOUS_REGION == pointState[ width * (z * height + y) + x ] )
+								long index = (long) width * (z * height + y) + x;
+								if( IN_PREVIOUS_REGION == pointState.get( index ) )
 									continue;
 								float value = sliceDataFloats[z][y * width + x];
 								if (value > valuesOverDouble) {
@@ -474,11 +476,11 @@ public class FindConnectedRegions {
 				}
 				int pointsInQueue = 0;
 				int queueArrayLength = 1024;
-				int[] queue = new int[queueArrayLength];
+				long[] queue = new long[queueArrayLength];
 
-				int i = width * (initial_z * height + initial_y) + initial_x;
-				pointState[i] = IN_QUEUE;
-				queue[pointsInQueue++] = i;
+				long index = (long) width * (initial_z * height + initial_y) + initial_x;
+				pointState.set(index, IN_QUEUE);
+				queue[pointsInQueue++] = index;
 
 				int pointsInThisRegion = 0;
 
@@ -487,18 +489,18 @@ public class FindConnectedRegions {
 					if(pleaseStop)
 						break;
 
-					int nextIndex = queue[--pointsInQueue];
+					long nextIndex = queue[--pointsInQueue];
 
-					int currentPointStateIndex = nextIndex;
-					int pz = nextIndex / (width * height);
-					int currentSliceIndex = nextIndex % (width * height);
+					long currentPointStateIndex = nextIndex;
+					int pz = (int) (nextIndex / (width * height));
+					int currentSliceIndex = (int) (nextIndex % (width * height));
 					int py = currentSliceIndex / width;
 					int px = currentSliceIndex % width;
 
 					if( verbose )
 						System.out.println("  Considering point from queue at "+px+", "+py+", "+pz);
 
-					pointState[currentPointStateIndex] = ADDED_TO_CURRENT_REGION;
+					pointState.set(currentPointStateIndex, ADDED_TO_CURRENT_REGION);
 
 					if (byteImage) {
 						sliceDataBytes[pz][currentSliceIndex] = 0;
@@ -574,14 +576,14 @@ public class FindConnectedRegions {
 
 								if( verbose ) {
 									System.out.println("    Not excluded by value");
-									System.out.println("    pointState is: "+pointState[newPointStateIndex]);
+									System.out.println("    pointState is: "+pointState.get(newPointStateIndex));
 								}
 
-								if (0 == pointState[newPointStateIndex]) {
-									pointState[newPointStateIndex] = IN_QUEUE;
+								if (0 == pointState.get(newPointStateIndex)) {
+									pointState.set(newPointStateIndex, IN_QUEUE);
 									if (pointsInQueue == queueArrayLength) {
 										int newArrayLength = (int) (queueArrayLength * 1.2);
-										int[] newArray = new int[newArrayLength];
+										long[] newArray = new long[newArrayLength];
 										System.arraycopy(queue, 0, newArray, 0, pointsInQueue);
 										queue = newArray;
 										queueArrayLength = newArrayLength;
@@ -610,9 +612,9 @@ public class FindConnectedRegions {
 				if (pointsInThisRegion < minimumPointsInRegionDouble) {
 					/* But we don't want to keep searching
 					   these, so set as IN_PREVIOUS_REGION: */
-					for( int p = 0; p < numberOfPointsInStack; ++p )
-						if( pointState[p] == ADDED_TO_CURRENT_REGION )
-							pointState[p] = IN_PREVIOUS_REGION;
+					for( long p = 0; p < numberOfPointsInStack; ++p )
+						if( pointState.get(p) == ADDED_TO_CURRENT_REGION )
+							pointState.set(p, IN_PREVIOUS_REGION);
 					continue;
 				}
 
@@ -635,7 +637,8 @@ public class FindConnectedRegions {
 					for (int z = 0; z < depth; ++z ) {
 						for( int y = 0; y < height; ++y ) {
 							for( int x = 0; x < width; ++x ) {
-								if( pointState[width * (z * height + y) + x] == ADDED_TO_CURRENT_REGION ) {
+								final long i = (long) width * (z * height + y) + x;
+								if( pointState.get(i) == ADDED_TO_CURRENT_REGION ) {
 									allRegionsPixels[z][y*width+x] = (short)regionNumber;
 								}
 							}
@@ -663,8 +666,8 @@ public class FindConnectedRegions {
 						byte[] sliceBytes = new byte[width * height];
 						for (int y = 0; y < height; ++y) {
 							for (int x = 0; x < width; ++x) {
-
-								byte status = pointState[width * (z * height + y) + x];
+								long i = (long) width * (z * height + y) + x;
+								byte status = pointState.get(i);
 
 								if (status == IN_QUEUE) {
 									IJ.log("BUG: point " + x + "," + y + "," + z + " is still marked as IN_QUEUE");
@@ -710,9 +713,9 @@ public class FindConnectedRegions {
 					}
 				}
 
-				for( int p = 0; p < numberOfPointsInStack; ++p )
-					if( pointState[p] == ADDED_TO_CURRENT_REGION )
-						pointState[p] = IN_PREVIOUS_REGION;
+				for( long p = 0; p < numberOfPointsInStack; ++p )
+					if( pointState.get(p) == ADDED_TO_CURRENT_REGION )
+						pointState.set(p, IN_PREVIOUS_REGION);
 
 				if ( (stopAfterNumberOfRegions > 0) && (results.regionInfo.size() >= stopAfterNumberOfRegions) ) {
 					break;
@@ -743,4 +746,19 @@ public class FindConnectedRegions {
 
 		return results;
 	}
+
+	/** Byte array container which can exceed 2G elements. */
+	public class PointState {
+		private byte[] state;
+		public PointState(long size) {
+			state = new byte[(int) size];
+		}
+		public void set(long i, byte value) {
+			state[(int) i] = value;
+		}
+		public byte get(final long i) {
+			return state[(int) i];
+		}
+	}
+
 }
