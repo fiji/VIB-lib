@@ -748,15 +748,31 @@ public class FindConnectedRegions {
 
 	/** Byte array container which can exceed 2G elements. */
 	public class PointState {
-		private byte[] state;
-		public PointState(long size) {
-			state = new byte[(int) size];
+		private static final int CHUNK_SIZE = 1024 * 1024 * 1024; // 1 GB
+		private final byte[][] state;
+
+		public PointState(final long size) {
+			final int numArrays = (int) (size / CHUNK_SIZE) + 1;
+			state = new byte[numArrays][];
+			int i = 0;
+			long remain = size;
+			while (remain > 0) {
+				int len = remain > CHUNK_SIZE ? CHUNK_SIZE : (int) remain;
+				state[i++] = new byte[len];
+				remain -= len;
+			}
 		}
-		public void set(long i, byte value) {
-			state[(int) i] = value;
+
+		public void set(final long index, final byte value) {
+			final int a = (int) (index / CHUNK_SIZE);
+			final int i = (int) (index % CHUNK_SIZE);
+			state[a][i] = value;
 		}
-		public byte get(final long i) {
-			return state[(int) i];
+
+		public byte get(final long index) {
+			final int a = (int) (index / CHUNK_SIZE);
+			final int i = (int) (index % CHUNK_SIZE);
+			return state[a][i];
 		}
 	}
 
