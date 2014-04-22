@@ -43,33 +43,30 @@
 
 package util;
 
+import amira.AmiraParameters;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
-import ij.gui.GenericDialog;
 import ij.gui.Roi;
-import ij.gui.PointRoi;
-import ij.plugin.PlugIn;
-import ij.process.ImageProcessor;
-import ij.process.ByteProcessor;
-import ij.process.ShortProcessor;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
-import amira.AmiraParameters;
 import ij.measure.Calibration;
-import ij.process.FloatProcessor;
-import ij.plugin.ImageCalculator;
-import java.awt.image.ColorModel;
 import ij.measure.ResultsTable;
-import java.awt.Dialog;
+import ij.plugin.ImageCalculator;
+import ij.process.ByteProcessor;
+import ij.process.FloatProcessor;
+import ij.process.ImageProcessor;
+import ij.process.ShortProcessor;
+
 import java.awt.Button;
-import java.awt.Polygon;
 import java.awt.Color;
+import java.awt.Dialog;
+import java.awt.Polygon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 class CancelDialog extends Dialog implements ActionListener {
 	Button cancel;
@@ -82,10 +79,11 @@ class CancelDialog extends Dialog implements ActionListener {
 		cancel.addActionListener(this);
 		pack();
 	}
-        public void actionPerformed( ActionEvent e ) {
+	@Override
+	public void actionPerformed( ActionEvent e ) {
 		Object source = e.getSource();
-                if( source == cancel ) {
-                        fcr.cancel();
+		if( source == cancel ) {
+			fcr.cancel();
 		}
 	}
 }
@@ -99,7 +97,7 @@ public class FindConnectedRegions {
 	}
 
 	/* An inner class to make the results list sortable. */
-	public class Region implements Comparable {
+	public class Region implements Comparable<Region> {
 
 		Region(int value, String materialName, int points, boolean sameValue) {
 			byteImage = true;
@@ -129,8 +127,8 @@ public class FindConnectedRegions {
 		int value;
 		boolean sameValue;
 
-		public int compareTo(Object otherRegion) {
-			Region o = (Region) otherRegion;
+		@Override
+		public int compareTo(Region o) {
 			return (points < o.points) ? -1 : ((points > o.points) ? 1 : 0);
 		}
 
@@ -142,9 +140,8 @@ public class FindConnectedRegions {
 					materialBit = " (" + materialName + ")";
 				}
 				return "Region of value " + value + materialBit + " containing " + points + " points";
-			} else {
-				return "Region containing " + points + " points";
 			}
+			return "Region containing " + points + " points";
 		}
 
 		public void addRow( ResultsTable rt ) {
@@ -205,21 +202,21 @@ public class FindConnectedRegions {
 	static final boolean verbose = false;
 
 	public Results run( ImagePlus imagePlus,
-			    boolean diagonal,
-			    boolean imagePerRegion,
-			    boolean imageAllRegions,
-			    boolean showResults,
-			    boolean mustHaveSameValue,
-			    boolean startFromPointROI,
-			    boolean autoSubtract,
-			    double valuesOverDouble,
-			    double minimumPointsInRegionDouble,
-			    int stopAfterNumberOfRegions,
-			    boolean noUI ) {
+	                    boolean diagonal,
+	                    boolean imagePerRegion,
+	                    boolean imageAllRegions,
+	                    boolean showResults,
+	                    boolean mustHaveSameValue,
+	                    boolean startFromPointROI,
+	                    boolean autoSubtract,
+	                    double valuesOverDouble,
+	                    double minimumPointsInRegionDouble,
+	                    int stopAfterNumberOfRegions,
+	                    boolean noUI ) {
 
 		Results results = new Results();
 		if( imagePerRegion )
-			results.perRegion = new ArrayList();
+			results.perRegion = new ArrayList<ImagePlus>();
 		results.regionInfo = new ArrayList<Region>();
 
 		ImageCalculator iCalc = new ImageCalculator();
@@ -336,15 +333,15 @@ public class FindConnectedRegions {
 
 			if( ! noUI ) {
 				cancelDialog=new CancelDialog(this);
-				cancelDialog.show();
+				cancelDialog.setVisible(true);
 			}
 
 			boolean firstTime = true;
 
 			int regionNumber = 0;
 
-			int numberOfPointsInStack = width * height * depth;
-			byte[] pointState = new byte[numberOfPointsInStack];
+			long numberOfPointsInStack = (long) width * height * depth;
+			PointState pointState = new PointState(numberOfPointsInStack);
 
 			int ignoreBeforeX = 0;
 			int ignoreBeforeY = 0;
@@ -401,7 +398,8 @@ public class FindConnectedRegions {
 						for (int y = startY; y < height && ! foundPoint; ++y) {
 							int startX = (z == ignoreBeforeZ && y == ignoreBeforeY) ? ignoreBeforeX : 0;
 							for (int x = startX; x < width; ++x) {
-								if( IN_PREVIOUS_REGION == pointState[ width * (z * height + y) + x ] )
+								long index = (long) width * (z * height + y) + x;
+								if( IN_PREVIOUS_REGION == pointState.get( index ) )
 									continue;
 								int value = sliceDataBytes[z][y * width + x] & 0xFF;
 								if (value > valuesOverDouble) {
@@ -434,7 +432,8 @@ public class FindConnectedRegions {
 						for (int y = startY; y < height && ! foundPoint; ++y) {
 							int startX = (z == ignoreBeforeZ && y == ignoreBeforeY) ? ignoreBeforeX : 0;
 							for (int x = startX; x < width; ++x) {
-								if( IN_PREVIOUS_REGION == pointState[ width * (z * height + y) + x ] )
+								long index = (long) width * (z * height + y) + x;
+								if( IN_PREVIOUS_REGION == pointState.get( index ) )
 									continue;
 								float value = sliceDataFloats[z][y * width + x];
 								if (value > valuesOverDouble) {
@@ -469,7 +468,6 @@ public class FindConnectedRegions {
 				firstTime = false;
 
 				int vint = foundValueInt;
-				float vfloat = foundValueFloat;
 
 				String materialName = null;
 				if (materialList != null) {
@@ -477,11 +475,11 @@ public class FindConnectedRegions {
 				}
 				int pointsInQueue = 0;
 				int queueArrayLength = 1024;
-				int[] queue = new int[queueArrayLength];
+				long[] queue = new long[queueArrayLength];
 
-				int i = width * (initial_z * height + initial_y) + initial_x;
-				pointState[i] = IN_QUEUE;
-				queue[pointsInQueue++] = i;
+				long index = (long) width * (initial_z * height + initial_y) + initial_x;
+				pointState.set(index, IN_QUEUE);
+				queue[pointsInQueue++] = index;
 
 				int pointsInThisRegion = 0;
 
@@ -490,18 +488,18 @@ public class FindConnectedRegions {
 					if(pleaseStop)
 						break;
 
-					int nextIndex = queue[--pointsInQueue];
+					long nextIndex = queue[--pointsInQueue];
 
-					int currentPointStateIndex = nextIndex;
-					int pz = nextIndex / (width * height);
-					int currentSliceIndex = nextIndex % (width * height);
+					long currentPointStateIndex = nextIndex;
+					int pz = (int) (nextIndex / (width * height));
+					int currentSliceIndex = (int) (nextIndex % (width * height));
 					int py = currentSliceIndex / width;
 					int px = currentSliceIndex % width;
 
 					if( verbose )
 						System.out.println("  Considering point from queue at "+px+", "+py+", "+pz);
 
-					pointState[currentPointStateIndex] = ADDED_TO_CURRENT_REGION;
+					pointState.set(currentPointStateIndex, ADDED_TO_CURRENT_REGION);
 
 					if (byteImage) {
 						sliceDataBytes[pz][currentSliceIndex] = 0;
@@ -577,14 +575,14 @@ public class FindConnectedRegions {
 
 								if( verbose ) {
 									System.out.println("    Not excluded by value");
-									System.out.println("    pointState is: "+pointState[newPointStateIndex]);
+									System.out.println("    pointState is: "+pointState.get(newPointStateIndex));
 								}
 
-								if (0 == pointState[newPointStateIndex]) {
-									pointState[newPointStateIndex] = IN_QUEUE;
+								if (0 == pointState.get(newPointStateIndex)) {
+									pointState.set(newPointStateIndex, IN_QUEUE);
 									if (pointsInQueue == queueArrayLength) {
 										int newArrayLength = (int) (queueArrayLength * 1.2);
-										int[] newArray = new int[newArrayLength];
+										long[] newArray = new long[newArrayLength];
 										System.arraycopy(queue, 0, newArray, 0, pointsInQueue);
 										queue = newArray;
 										queueArrayLength = newArrayLength;
@@ -613,9 +611,9 @@ public class FindConnectedRegions {
 				if (pointsInThisRegion < minimumPointsInRegionDouble) {
 					/* But we don't want to keep searching
 					   these, so set as IN_PREVIOUS_REGION: */
-					for( int p = 0; p < numberOfPointsInStack; ++p )
-						if( pointState[p] == ADDED_TO_CURRENT_REGION )
-							pointState[p] = IN_PREVIOUS_REGION;
+					for( long p = 0; p < numberOfPointsInStack; ++p )
+						if( pointState.get(p) == ADDED_TO_CURRENT_REGION )
+							pointState.set(p, IN_PREVIOUS_REGION);
 					continue;
 				}
 
@@ -638,7 +636,8 @@ public class FindConnectedRegions {
 					for (int z = 0; z < depth; ++z ) {
 						for( int y = 0; y < height; ++y ) {
 							for( int x = 0; x < width; ++x ) {
-								if( pointState[width * (z * height + y) + x] == ADDED_TO_CURRENT_REGION ) {
+								final long i = (long) width * (z * height + y) + x;
+								if( pointState.get(i) == ADDED_TO_CURRENT_REGION ) {
 									allRegionsPixels[z][y*width+x] = (short)regionNumber;
 								}
 							}
@@ -666,8 +665,8 @@ public class FindConnectedRegions {
 						byte[] sliceBytes = new byte[width * height];
 						for (int y = 0; y < height; ++y) {
 							for (int x = 0; x < width; ++x) {
-
-								byte status = pointState[width * (z * height + y) + x];
+								long i = (long) width * (z * height + y) + x;
+								byte status = pointState.get(i);
 
 								if (status == IN_QUEUE) {
 									IJ.log("BUG: point " + x + "," + y + "," + z + " is still marked as IN_QUEUE");
@@ -713,9 +712,9 @@ public class FindConnectedRegions {
 					}
 				}
 
-				for( int p = 0; p < numberOfPointsInStack; ++p )
-					if( pointState[p] == ADDED_TO_CURRENT_REGION )
-						pointState[p] = IN_PREVIOUS_REGION;
+				for( long p = 0; p < numberOfPointsInStack; ++p )
+					if( pointState.get(p) == ADDED_TO_CURRENT_REGION )
+						pointState.set(p, IN_PREVIOUS_REGION);
 
 				if ( (stopAfterNumberOfRegions > 0) && (results.regionInfo.size() >= stopAfterNumberOfRegions) ) {
 					break;
@@ -746,4 +745,35 @@ public class FindConnectedRegions {
 
 		return results;
 	}
+
+	/** Byte array container which can exceed 2G elements. */
+	public class PointState {
+		private static final int CHUNK_SIZE = 1024 * 1024 * 1024; // 1 GB
+		private final byte[][] state;
+
+		public PointState(final long size) {
+			final int numArrays = (int) (size / CHUNK_SIZE) + 1;
+			state = new byte[numArrays][];
+			int i = 0;
+			long remain = size;
+			while (remain > 0) {
+				int len = remain > CHUNK_SIZE ? CHUNK_SIZE : (int) remain;
+				state[i++] = new byte[len];
+				remain -= len;
+			}
+		}
+
+		public void set(final long index, final byte value) {
+			final int a = (int) (index / CHUNK_SIZE);
+			final int i = (int) (index % CHUNK_SIZE);
+			state[a][i] = value;
+		}
+
+		public byte get(final long index) {
+			final int a = (int) (index / CHUNK_SIZE);
+			final int i = (int) (index % CHUNK_SIZE);
+			return state[a][i];
+		}
+	}
+
 }
