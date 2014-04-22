@@ -79,6 +79,7 @@ class CancelDialog extends Dialog implements ActionListener {
 		cancel.addActionListener(this);
 		pack();
 	}
+	@Override
         public void actionPerformed( ActionEvent e ) {
 		Object source = e.getSource();
                 if( source == cancel ) {
@@ -126,6 +127,7 @@ public class FindConnectedRegions {
 		int value;
 		boolean sameValue;
 
+		@Override
 		public int compareTo(Region o) {
 			return (points < o.points) ? -1 : ((points > o.points) ? 1 : 0);
 		}
