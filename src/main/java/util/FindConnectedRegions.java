@@ -140,9 +140,8 @@ public class FindConnectedRegions {
 					materialBit = " (" + materialName + ")";
 				}
 				return "Region of value " + value + materialBit + " containing " + points + " points";
-			} else {
-				return "Region containing " + points + " points";
 			}
+			return "Region containing " + points + " points";
 		}
 
 		public void addRow( ResultsTable rt ) {
