@@ -80,10 +80,10 @@ class CancelDialog extends Dialog implements ActionListener {
 		pack();
 	}
 	@Override
-        public void actionPerformed( ActionEvent e ) {
+	public void actionPerformed( ActionEvent e ) {
 		Object source = e.getSource();
-                if( source == cancel ) {
-                        fcr.cancel();
+		if( source == cancel ) {
+			fcr.cancel();
 		}
 	}
 }
@@ -202,17 +202,17 @@ public class FindConnectedRegions {
 	static final boolean verbose = false;
 
 	public Results run( ImagePlus imagePlus,
-			    boolean diagonal,
-			    boolean imagePerRegion,
-			    boolean imageAllRegions,
-			    boolean showResults,
-			    boolean mustHaveSameValue,
-			    boolean startFromPointROI,
-			    boolean autoSubtract,
-			    double valuesOverDouble,
-			    double minimumPointsInRegionDouble,
-			    int stopAfterNumberOfRegions,
-			    boolean noUI ) {
+	                    boolean diagonal,
+	                    boolean imagePerRegion,
+	                    boolean imageAllRegions,
+	                    boolean showResults,
+	                    boolean mustHaveSameValue,
+	                    boolean startFromPointROI,
+	                    boolean autoSubtract,
+	                    double valuesOverDouble,
+	                    double minimumPointsInRegionDouble,
+	                    int stopAfterNumberOfRegions,
+	                    boolean noUI ) {
 
 		Results results = new Results();
 		if( imagePerRegion )
