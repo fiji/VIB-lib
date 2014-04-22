@@ -216,7 +216,7 @@ public class FindConnectedRegions {
 
 		Results results = new Results();
 		if( imagePerRegion )
-			results.perRegion = new ArrayList();
+			results.perRegion = new ArrayList<ImagePlus>();
 		results.regionInfo = new ArrayList<Region>();
 
 		ImageCalculator iCalc = new ImageCalculator();
