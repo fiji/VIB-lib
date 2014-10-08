@@ -2,20 +2,15 @@ package amira;
 
 import ij.IJ;
 import ij.ImageStack;
-import ij.text.TextPanel;
-import ij.text.TextWindow;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.RandomAccessFile;
-import java.util.Arrays;
-import java.util.Properties;
 import java.util.regex.*;
 import java.awt.image.*;
 
 import com.jcraft.jzlib.InflaterInputStream;
-import com.jcraft.jzlib.ZInputStream;
 
 public class AmiraMeshDecoder {
 	private int width,height,numSlices;
