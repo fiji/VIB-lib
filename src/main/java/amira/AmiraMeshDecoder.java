@@ -4,13 +4,17 @@ import ij.IJ;
 import ij.ImageStack;
 import ij.text.TextPanel;
 import ij.text.TextWindow;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.RandomAccessFile;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.regex.*;
 import java.awt.image.*;
+
+import com.jcraft.jzlib.InflaterInputStream;
 import com.jcraft.jzlib.ZInputStream;
 
 public class AmiraMeshDecoder {
@@ -30,7 +34,8 @@ public class AmiraMeshDecoder {
 	// RLE
 	private byte[] rleOverrun;
 	private int rleOverrunLength;
-	private ZInputStream zStream;
+	//private ZInputStream zStream;
+	private InflaterInputStream zStream;
 	private int zLength;
 
 	// ASCII
@@ -228,11 +233,22 @@ public class AmiraMeshDecoder {
 	}
 
 	public int readZlib(byte[] pixels,int offset,int length) throws java.io.IOException {
-		if (zStream == null)
-			zStream = new ZInputStream(new BufferedInputStream(new FileInputStream(file.getFD())));
-		return zStream.read(pixels, offset, length);
+		try{
+			if (zStream == null)
+				//zStream = new ZInputStream(new BufferedInputStream(new FileInputStream(file.getFD())));
+				zStream = new InflaterInputStream( new BufferedInputStream(new FileInputStream(file.getFD())) );
+			return zStream.read(pixels, offset, length);
+		}catch( Exception ex )
+		{
+			ex.printStackTrace();
+			return -1;
+		}
 	}
 
+	/**
+	 * Get AmiraMesh data as a stack
+	 * @return image info a stack
+	 */
 	public ImageStack getStack() {
 		if(file==null || endOffsetOfPreamble<0)
 			return null;
@@ -243,30 +259,32 @@ public class AmiraMeshDecoder {
 		else
 			stack=new ImageStack(width,height,colorModel);
 		byte[] buffer;
+		
 		try {
 			file.seek(endOffsetOfPreamble);
-			for(int z=0;z<numSlices;z++) {
-				buffer=new byte[width*height];
-				if(mode == RLE) {
-					int count,offset=0,length=width*height;
-					while((count=readRLE(buffer,offset,length))<length) {
-						offset+=count;
-						length-=count;
-					}
-				} else if(mode == ZLIB) {
-					int count,offset=0,length=width*height;
-					while((count=readZlib(buffer,offset,length))<length) {
-						if (count < 0)
-							break;
-						offset+=count;
-						length-=count;
-					}
-				} else
-
-					file.read(buffer,0,width*height);
-				stack.addSlice(null,buffer);
-				IJ.showProgress(z+1, numSlices);
-			}
+			
+			// buffer of bytes to read the entire image 
+			buffer = new byte[ width * height * numSlices ];
+			if( mode == RLE ) 
+			{
+				int offset=0,length=width*height*numSlices;
+				if( readRLE( buffer, offset, length ) < 0 )
+					return null; 
+			} else if(mode == ZLIB) {
+				int offset=0,length=width*height*numSlices;
+				if( readZlib( buffer, offset, length ) < 0 )
+					return null;				
+			} else
+				file.read(buffer, 0, width * height *numSlices);
+			
+			if( null != buffer )
+				for(int z=0;z<numSlices;z++)
+				{
+					// copy buffer info to stack
+					byte[] slicePixels = new byte[ width * height ];
+					System.arraycopy(buffer, z * slicePixels.length, slicePixels, 0, slicePixels.length );
+					stack.addSlice(null, slicePixels);
+				}									
 		} catch(Exception e) {
 			e.printStackTrace();
 			IJ.error("internal: "+e.toString());
