@@ -141,6 +141,7 @@ public class AmiraMeshEncoder {
 			throw new RuntimeException(e.toString());
 		}
 
+		IJ.showProgress( 1.0 );
 		IJ.showStatus("");
 
 		return true;

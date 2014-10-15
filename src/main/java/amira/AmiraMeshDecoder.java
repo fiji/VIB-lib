@@ -275,6 +275,8 @@ public class AmiraMeshDecoder {
 			e.printStackTrace();
 			IJ.error("internal: "+e.toString());
 		}
+		
+		IJ.showProgress( 1.0 );
 		return stack;
 	}
 
