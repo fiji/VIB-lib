@@ -4,27 +4,16 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.process.ByteProcessor;
-import ij.text.TextPanel;
-import ij.text.TextWindow;
-import ij.util.ArrayUtil;
-import ij.util.Tools;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.RandomAccessFile;
-import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.regex.*;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
-import java.util.Arrays;
-import java.util.Properties;
 import java.util.Hashtable;
 import java.util.Vector;
-import java.util.Enumeration;
 
 public class AmiraMeshEncoder {
 	private int width,height,numSlices;
