@@ -10,8 +10,9 @@ import java.io.FileInputStream;
 import java.io.RandomAccessFile;
 import java.util.Properties;
 import java.util.regex.*;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 import java.awt.image.*;
-import com.jcraft.jzlib.ZInputStream;
 
 public class AmiraMeshDecoder {
 	private int width,height,numSlices;
@@ -30,7 +31,7 @@ public class AmiraMeshDecoder {
 	// RLE
 	private byte[] rleOverrun;
 	private int rleOverrunLength;
-	private ZInputStream zStream;
+	private InflaterInputStream zStream;
 	private int zLength;
 
 	// ASCII
@@ -228,11 +229,17 @@ public class AmiraMeshDecoder {
 	}
 
 	public int readZlib(byte[] pixels,int offset,int length) throws java.io.IOException {
-		if (zStream == null)
-			zStream = new ZInputStream(new BufferedInputStream(new FileInputStream(file.getFD())));
-		return zStream.read(pixels, offset, length);
-	}
 
+		if (zStream == null){
+			BufferedInputStream in = new BufferedInputStream( new FileInputStream( file.getFD() ) );				
+			zStream = new InflaterInputStream( in, new Inflater(), length );				
+		}
+		return zStream.read(pixels, offset, length);		
+	}
+	/**
+	 * Get AmiraMesh data as a stack
+	 * @return image info a stack
+	 */
 	public ImageStack getStack() {
 		if(file==null || endOffsetOfPreamble<0)
 			return null;
