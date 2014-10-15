@@ -45,10 +45,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.jcraft</groupId>
-			<artifactId>jzlib</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>sc.fiji</groupId>
 			<artifactId>pal-optimization</artifactId>
 		</dependency>
