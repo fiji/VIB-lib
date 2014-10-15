@@ -464,21 +464,27 @@ public class AmiraParameters {
 		if(boundingBox.hasMoreTokens())
 			cal.xOrigin = -Double.parseDouble(boundingBox.nextToken());
 		if(boundingBox.hasMoreTokens()) {
-			cal.pixelWidth = (Double.parseDouble(boundingBox.nextToken())+cal.xOrigin)/width;
-			if(cal.pixelWidth!=0)
+			cal.pixelWidth = ( width != 1 ) ? 
+					(Double.parseDouble(boundingBox.nextToken())+cal.xOrigin)/(width-1) :
+					(Double.parseDouble(boundingBox.nextToken())+cal.xOrigin);
+			if(cal.pixelWidth !=0 )
 				cal.xOrigin/=cal.pixelWidth;
 		}
 		if(boundingBox.hasMoreTokens())
 			cal.yOrigin = -Double.parseDouble(boundingBox.nextToken());
 		if(boundingBox.hasMoreTokens()) {
-			cal.pixelHeight = (Double.parseDouble(boundingBox.nextToken())+cal.yOrigin)/height;
+			cal.pixelHeight = ( height != 1 ) ? 
+					(Double.parseDouble(boundingBox.nextToken())+cal.yOrigin)/(height-1) :
+					(Double.parseDouble(boundingBox.nextToken())+cal.yOrigin);
 			if(cal.pixelHeight!=0)
 				cal.yOrigin/=cal.pixelHeight;
 		}
 		if(boundingBox.hasMoreTokens())
 			cal.zOrigin = -Double.parseDouble(boundingBox.nextToken());
 		if(boundingBox.hasMoreTokens()) {
-			cal.pixelDepth = (Double.parseDouble(boundingBox.nextToken())+cal.zOrigin)/depth;
+			cal.pixelDepth = (depth != 1 ) ?
+					(Double.parseDouble(boundingBox.nextToken())+cal.zOrigin)/(depth-1) :
+					(Double.parseDouble(boundingBox.nextToken())+cal.zOrigin);	
 			if(cal.pixelDepth!=0)
 				cal.zOrigin/=cal.pixelDepth;
 		}
