@@ -31,6 +31,7 @@ public class AmiraMeshEncoder {
 	private byte[] rleOverrun;
 	private int rleOverrunLength;
 	private DeflaterOutputStream zStream;
+	private BufferedOutputStream out;
 	private int zLength;
 
 	public AmiraMeshEncoder(String path_) {
@@ -143,7 +144,10 @@ public class AmiraMeshEncoder {
 			}
 			
 			if (mode == ZLIB)
+			{
 				zStream.close();
+				out.close();				
+			}
 			file.close();
 			
 		} catch(Exception e) {
@@ -214,7 +218,10 @@ public class AmiraMeshEncoder {
 			}
 			
 			if (mode == ZLIB)
+			{
 				zStream.close();
+				out.close();				
+			}
 			file.close();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -249,8 +256,7 @@ public class AmiraMeshEncoder {
 		}
 	}
 
-	public void writeZlib(byte[] pixels) throws IOException {
-		BufferedOutputStream out;
+	public void writeZlib(byte[] pixels) throws IOException {		
 		if (zStream == null) {
 			out = new BufferedOutputStream(new FileOutputStream(file.getFD()));
 			zStream = new DeflaterOutputStream(out, new Deflater(), pixels.length );
