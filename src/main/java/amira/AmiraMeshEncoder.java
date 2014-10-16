@@ -91,6 +91,14 @@ public class AmiraMeshEncoder {
 
 	// TODO: adjust Colors of Materials
 
+	/**
+	 * Write image as AmiraMesh. This method writes the image slice by slice,
+	 * so it is slower than <code>writeFast</code> but uses less memory.
+	 * Important: the file will be closed after writing.
+	 * 
+	 * @param ip image to write
+	 * @return false if error
+	 */
 	public boolean write(ImagePlus ip) {
 		IJ.showStatus("Writing "+path+" (AmiraMesh) ...");
 
@@ -120,10 +128,7 @@ public class AmiraMeshEncoder {
 				}
 				
 				IJ.showProgress(k, numSlices);
-			}
-
-			if (mode == ZLIB)
-				zStream.finish();
+			}			
 
 			// fix file size
 			long eof=file.getFilePointer();
@@ -136,6 +141,11 @@ public class AmiraMeshEncoder {
 				file.writeBytes("" + length + ")\n");
 				file.seek(eof);
 			}
+			
+			if (mode == ZLIB)
+				zStream.close();
+			file.close();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e.toString());
@@ -151,6 +161,8 @@ public class AmiraMeshEncoder {
 	 * Write image as AmiraMesh with just one access to file. This method
 	 * is much faster than <code>write</code> but requires duplicating the
 	 * data in memory.
+	 * Important: the file will be closed after writing.
+	 * 
 	 * @param ip image to write
 	 * @return false if error
 	 * 
@@ -187,10 +199,7 @@ public class AmiraMeshEncoder {
 			else if (mode == ZLIB)
 				writeZlib( allPixels );
 			else
-				file.write( allPixels );
-			
-			if (mode == ZLIB)
-				zStream.finish();
+				file.write( allPixels );						
 
 			// fix file size
 			long eof=file.getFilePointer();
@@ -203,6 +212,10 @@ public class AmiraMeshEncoder {
 				file.writeBytes("" + length + ")\n");
 				file.seek(eof);
 			}
+			
+			if (mode == ZLIB)
+				zStream.close();
+			file.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e.toString());
