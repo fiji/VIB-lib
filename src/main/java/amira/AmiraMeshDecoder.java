@@ -268,7 +268,7 @@ public class AmiraMeshDecoder {
 					}
 				} else
 
-					file.read(buffer,0,width*height);
+				file.read(buffer,0,width*height);
 				stack.addSlice(null,buffer);
 				IJ.showProgress(z+1, numSlices);
 			}
