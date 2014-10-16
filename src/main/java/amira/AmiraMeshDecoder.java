@@ -72,7 +72,8 @@ public class AmiraMeshDecoder {
 					return false;
 				if(firstLine) {
 					Matcher firstLineMatcher=firstLinePattern.matcher(line);
-					if( !firstLineMatcher.matches() || line.startsWith( "# Avizo" ) == false ) {
+
+					if( !firstLineMatcher.matches() && line.startsWith( "# Avizo" ) == false ) {
 						throw new Exception("This doesn't look like an AmiraMesh file; the first line must be a comment containing the text 'AmiraMesh' or 'Avizo'.");
 					}
 					firstLine=false;
