@@ -147,6 +147,73 @@ public class AmiraMeshEncoder {
 		return true;
 	}
 
+	/**
+	 * Write image as AmiraMesh with just one access to file. This method
+	 * is much faster than <code>write</code> but requires duplicating the
+	 * data in memory.
+	 * @param ip image to write
+	 * @return false if error
+	 * 
+	 * @author Ignacio Arganda-Carreras
+	 */
+	public boolean writeFast( ImagePlus ip ) {
+		IJ.showStatus( "Writing " + path + " (AmiraMesh) ..." );
+
+		width=ip.getWidth();
+		height=ip.getHeight();
+		numSlices=ip.getStackSize();
+
+		if(!writeHeader(ip))
+			return false;
+
+		byte[] allPixels = new byte[ width * height * numSlices ];
+		try {
+			long offsetOfData=file.getFilePointer();
+
+			ImageStack is=ip.getStack();
+			for(int k=1;k<=numSlices;k++) {
+				ByteProcessor ipro=(ByteProcessor)is.getProcessor(k);
+				byte[] pixels=(byte[])ipro.getPixels();
+				
+				// copy slice pixels to array with all pixels
+				System.arraycopy(pixels, 0, allPixels, (k-1)*pixels.length, pixels.length );								
+				
+				IJ.showProgress( k, numSlices );
+			}
+
+			// write all pixels at once
+			if (mode == RLE)
+				writeRLE( allPixels );
+			else if (mode == ZLIB)
+				writeZlib( allPixels );
+			else
+				file.write( allPixels );
+			
+			if (mode == ZLIB)
+				zStream.finish();
+
+			// fix file size
+			long eof=file.getFilePointer();
+			file.setLength(eof);
+
+			// fix up stream length
+			if (mode == RLE || mode == ZLIB) {
+				long length = eof - offsetOfData;
+				file.seek(offsetOfStreamLength);
+				file.writeBytes("" + length + ")\n");
+				file.seek(eof);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e.toString());
+		}
+
+		IJ.showProgress( 1.0 );
+		IJ.showStatus("");
+
+		return true;
+	}
+
 	public void writeRLE(byte[] pixels) throws IOException {
 		for(int i=0;i<pixels.length;) {
 			if(i+1>=pixels.length) {
