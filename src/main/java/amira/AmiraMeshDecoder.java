@@ -281,6 +281,65 @@ public class AmiraMeshDecoder {
 		return stack;
 	}
 
+	/**
+	 * Get AmiraMesh data as a stack in a fast way, at a cost of reading the 
+	 * whole image information at once. It requires more memory than <code>getStack</code>
+	 * but it is much faster.
+	 * 
+	 * @return image info as stack or null if error
+	 */
+	public ImageStack getStackFast() {
+		if(file==null || endOffsetOfPreamble<0)
+			return null;
+		// output stack
+		ImageStack stack;
+		
+		ColorModel colorModel=parameters.getColorModel();
+		
+		if(colorModel==null)
+			stack=new ImageStack(width,height);
+		else
+			stack=new ImageStack(width,height,colorModel);
+		
+		// buffer to store all pixel information
+		byte[] buffer = null;
+		
+		// read all pixel data from file at once
+		try {
+			file.seek(endOffsetOfPreamble);
+			int length = width * height * numSlices;
+			buffer = new byte[ length ];
+			
+			if(mode == RLE) {				
+				if( readRLE( buffer, 0 ,length ) < length )
+					return null;
+			} 
+			else if(mode == ZLIB) {
+				if ( readZlib( buffer, 0, length) < length ) 
+					return null;
+			} else{
+				if( file.read( buffer, 0, length ) < length )
+					return null;
+			}
+				
+		} catch(Exception e) {
+			e.printStackTrace();
+			IJ.error("internal: "+e.toString());
+		}
+		
+		// copy all pixel data to stack
+		if(null != buffer )
+			for( int z=0; z<numSlices; z++ ) {
+				byte[] pixels = new byte[ width * height ];
+				System.arraycopy( buffer, z*pixels.length, pixels, 0, pixels.length );
+				stack.addSlice( null, pixels );
+				IJ.showProgress( z+1, numSlices );
+			}
+		
+		IJ.showProgress( 1.0 );
+		return stack;
+	}
+	
 	public boolean isTable() {
 		return mode == ASCII;
 	}
