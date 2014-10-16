@@ -31,6 +31,7 @@ public class AmiraMeshEncoder {
 	private byte[] rleOverrun;
 	private int rleOverrunLength;
 	private DeflaterOutputStream zStream;
+	private BufferedOutputStream out;
 	private int zLength;
 
 	public AmiraMeshEncoder(String path_) {
@@ -91,6 +92,14 @@ public class AmiraMeshEncoder {
 
 	// TODO: adjust Colors of Materials
 
+	/**
+	 * Write image as AmiraMesh. This method writes the image slice by slice,
+	 * so it is slower than <code>writeFast</code> but uses less memory.
+	 * Important: the file will be closed after writing.
+	 * 
+	 * @param ip image to write
+	 * @return false if error
+	 */
 	public boolean write(ImagePlus ip) {
 		IJ.showStatus("Writing "+path+" (AmiraMesh) ...");
 
@@ -120,10 +129,7 @@ public class AmiraMeshEncoder {
 				}
 				
 				IJ.showProgress(k, numSlices);
-			}
-
-			if (mode == ZLIB)
-				zStream.finish();
+			}			
 
 			// fix file size
 			long eof=file.getFilePointer();
@@ -136,6 +142,87 @@ public class AmiraMeshEncoder {
 				file.writeBytes("" + length + ")\n");
 				file.seek(eof);
 			}
+			
+			if (mode == ZLIB)
+			{
+				zStream.close();
+				out.close();				
+			}
+			file.close();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e.toString());
+		}
+
+		IJ.showProgress( 1.0 );
+		IJ.showStatus("");
+
+		return true;
+	}
+
+	/**
+	 * Write image as AmiraMesh with just one access to file. This method
+	 * is much faster than <code>write</code> but requires duplicating the
+	 * data in memory.
+	 * Important: the file will be closed after writing.
+	 * 
+	 * @param ip image to write
+	 * @return false if error
+	 * 
+	 * @author Ignacio Arganda-Carreras
+	 */
+	public boolean writeFast( ImagePlus ip ) {
+		IJ.showStatus( "Writing " + path + " (AmiraMesh) ..." );
+
+		width=ip.getWidth();
+		height=ip.getHeight();
+		numSlices=ip.getStackSize();
+
+		if(!writeHeader(ip))
+			return false;
+
+		byte[] allPixels = new byte[ width * height * numSlices ];
+		try {
+			long offsetOfData=file.getFilePointer();
+
+			ImageStack is=ip.getStack();
+			for(int k=1;k<=numSlices;k++) {
+				ByteProcessor ipro=(ByteProcessor)is.getProcessor(k);
+				byte[] pixels=(byte[])ipro.getPixels();
+				
+				// copy slice pixels to array with all pixels
+				System.arraycopy(pixels, 0, allPixels, (k-1)*pixels.length, pixels.length );								
+				
+				IJ.showProgress( k, numSlices );
+			}
+
+			// write all pixels at once
+			if (mode == RLE)
+				writeRLE( allPixels );
+			else if (mode == ZLIB)
+				writeZlib( allPixels );
+			else
+				file.write( allPixels );						
+
+			// fix file size
+			long eof=file.getFilePointer();
+			file.setLength(eof);
+
+			// fix up stream length
+			if (mode == RLE || mode == ZLIB) {
+				long length = eof - offsetOfData;
+				file.seek(offsetOfStreamLength);
+				file.writeBytes("" + length + ")\n");
+				file.seek(eof);
+			}
+			
+			if (mode == ZLIB)
+			{
+				zStream.close();
+				out.close();				
+			}
+			file.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e.toString());
@@ -169,8 +256,7 @@ public class AmiraMeshEncoder {
 		}
 	}
 
-	public void writeZlib(byte[] pixels) throws IOException {
-		BufferedOutputStream out;
+	public void writeZlib(byte[] pixels) throws IOException {		
 		if (zStream == null) {
 			out = new BufferedOutputStream(new FileOutputStream(file.getFD()));
 			zStream = new DeflaterOutputStream(out, new Deflater(), pixels.length );

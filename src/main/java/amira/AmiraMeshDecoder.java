@@ -29,6 +29,7 @@ public class AmiraMeshDecoder {
 	private byte[] rleOverrun;
 	private int rleOverrunLength;
 	private InflaterInputStream zStream;
+	private BufferedInputStream in;
 	private int zLength;
 
 	// ASCII
@@ -72,7 +73,8 @@ public class AmiraMeshDecoder {
 					return false;
 				if(firstLine) {
 					Matcher firstLineMatcher=firstLinePattern.matcher(line);
-					if( !firstLineMatcher.matches() || line.startsWith( "# Avizo" ) == false ) {
+
+					if( !firstLineMatcher.matches() && line.startsWith( "# Avizo" ) == false ) {
 						throw new Exception("This doesn't look like an AmiraMesh file; the first line must be a comment containing the text 'AmiraMesh' or 'Avizo'.");
 					}
 					firstLine=false;
@@ -228,13 +230,16 @@ public class AmiraMeshDecoder {
 	public int readZlib(byte[] pixels,int offset,int length) throws java.io.IOException {
 
 		if (zStream == null){
-			BufferedInputStream in = new BufferedInputStream( new FileInputStream( file.getFD() ) );				
+			in = new BufferedInputStream( new FileInputStream( file.getFD() ) );				
 			zStream = new InflaterInputStream( in, new Inflater(), length );				
 		}
 		return zStream.read(pixels, offset, length);		
 	}
 	/**
-	 * Get AmiraMesh data as a stack
+	 * Get AmiraMesh data as a stack. This method reads the slices one by one,
+	 * so it is slower than <code>getStackFast</code> but uses less memory.
+	 * Important: the file and output stream are closed after reading.
+	 * 
 	 * @return image info a stack
 	 */
 	public ImageStack getStack() {
@@ -267,10 +272,17 @@ public class AmiraMeshDecoder {
 					}
 				} else
 
-					file.read(buffer,0,width*height);
+				file.read(buffer,0,width*height);
 				stack.addSlice(null,buffer);
 				IJ.showProgress(z+1, numSlices);
 			}
+			
+			if( mode == ZLIB )
+			{
+				zStream.close();
+				in.close();
+			}
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 			IJ.error("internal: "+e.toString());
@@ -280,6 +292,72 @@ public class AmiraMeshDecoder {
 		return stack;
 	}
 
+	/**
+	 * Get AmiraMesh data as a stack in a fast way, at a cost of reading the 
+	 * whole image information at once. It requires more memory than <code>getStack</code>
+	 * but it is much faster.
+	 * Important: the file and output stream are closed after reading.
+	 * 
+	 * @return image info as stack or null if error
+	 */
+	public ImageStack getStackFast() {
+		if(file==null || endOffsetOfPreamble<0)
+			return null;
+		// output stack
+		ImageStack stack;
+		
+		ColorModel colorModel=parameters.getColorModel();
+		
+		if(colorModel==null)
+			stack=new ImageStack(width,height);
+		else
+			stack=new ImageStack(width,height,colorModel);
+		
+		// buffer to store all pixel information
+		byte[] buffer = null;
+		
+		// read all pixel data from file at once
+		try {
+			file.seek(endOffsetOfPreamble);
+			int length = width * height * numSlices;
+			buffer = new byte[ length ];
+			
+			if(mode == RLE) {				
+				if( readRLE( buffer, 0 ,length ) < length )
+					return null;
+			} 
+			else if(mode == ZLIB) {
+				if ( readZlib( buffer, 0, length) < length ) 
+					return null;
+			} else{
+				if( file.read( buffer, 0, length ) < length )
+					return null;
+			}
+			
+			if( mode == ZLIB )
+			{
+				zStream.close();
+				in.close();
+			}
+				
+		} catch(Exception e) {
+			e.printStackTrace();
+			IJ.error("internal: "+e.toString());
+		}
+		
+		// copy all pixel data to stack
+		if(null != buffer )
+			for( int z=0; z<numSlices; z++ ) {
+				byte[] pixels = new byte[ width * height ];
+				System.arraycopy( buffer, z*pixels.length, pixels, 0, pixels.length );
+				stack.addSlice( null, pixels );
+				IJ.showProgress( z+1, numSlices );
+			}
+		
+		IJ.showProgress( 1.0 );
+		return stack;
+	}
+	
 	public boolean isTable() {
 		return mode == ASCII;
 	}
