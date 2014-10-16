@@ -29,6 +29,7 @@ public class AmiraMeshDecoder {
 	private byte[] rleOverrun;
 	private int rleOverrunLength;
 	private InflaterInputStream zStream;
+	private BufferedInputStream in;
 	private int zLength;
 
 	// ASCII
@@ -229,13 +230,16 @@ public class AmiraMeshDecoder {
 	public int readZlib(byte[] pixels,int offset,int length) throws java.io.IOException {
 
 		if (zStream == null){
-			BufferedInputStream in = new BufferedInputStream( new FileInputStream( file.getFD() ) );				
+			in = new BufferedInputStream( new FileInputStream( file.getFD() ) );				
 			zStream = new InflaterInputStream( in, new Inflater(), length );				
 		}
 		return zStream.read(pixels, offset, length);		
 	}
 	/**
-	 * Get AmiraMesh data as a stack
+	 * Get AmiraMesh data as a stack. This method reads the slices one by one,
+	 * so it is slower than <code>getStackFast</code> but uses less memory.
+	 * Important: the file and output stream are closed after reading.
+	 * 
 	 * @return image info a stack
 	 */
 	public ImageStack getStack() {
@@ -272,6 +276,13 @@ public class AmiraMeshDecoder {
 				stack.addSlice(null,buffer);
 				IJ.showProgress(z+1, numSlices);
 			}
+			
+			if( mode == ZLIB )
+			{
+				zStream.close();
+				in.close();
+			}
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 			IJ.error("internal: "+e.toString());
@@ -285,6 +296,7 @@ public class AmiraMeshDecoder {
 	 * Get AmiraMesh data as a stack in a fast way, at a cost of reading the 
 	 * whole image information at once. It requires more memory than <code>getStack</code>
 	 * but it is much faster.
+	 * Important: the file and output stream are closed after reading.
 	 * 
 	 * @return image info as stack or null if error
 	 */
@@ -320,6 +332,12 @@ public class AmiraMeshDecoder {
 			} else{
 				if( file.read( buffer, 0, length ) < length )
 					return null;
+			}
+			
+			if( mode == ZLIB )
+			{
+				zStream.close();
+				in.close();
 			}
 				
 		} catch(Exception e) {
