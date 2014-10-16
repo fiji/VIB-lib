@@ -2,16 +2,14 @@ package amira;
 
 import ij.IJ;
 import ij.ImageStack;
-import ij.text.TextPanel;
-import ij.text.TextWindow;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.RandomAccessFile;
-import java.util.Properties;
 import java.util.regex.*;
+import java.util.zip.Inflater;
+import java.util.zip.InflaterInputStream;
 import java.awt.image.*;
-import com.jcraft.jzlib.ZInputStream;
 
 public class AmiraMeshDecoder {
 	private int width,height,numSlices;
@@ -30,7 +28,7 @@ public class AmiraMeshDecoder {
 	// RLE
 	private byte[] rleOverrun;
 	private int rleOverrunLength;
-	private ZInputStream zStream;
+	private InflaterInputStream zStream;
 	private int zLength;
 
 	// ASCII
@@ -74,8 +72,8 @@ public class AmiraMeshDecoder {
 					return false;
 				if(firstLine) {
 					Matcher firstLineMatcher=firstLinePattern.matcher(line);
-					if(!firstLineMatcher.matches()) {
-						throw new Exception("This doesn't look like an AmiraMesh file; the first line must be a comment containing the text 'AmiraMesh'.");
+					if( !firstLineMatcher.matches() || line.startsWith( "# Avizo" ) == false ) {
+						throw new Exception("This doesn't look like an AmiraMesh file; the first line must be a comment containing the text 'AmiraMesh' or 'Avizo'.");
 					}
 					firstLine=false;
 				}
@@ -228,11 +226,17 @@ public class AmiraMeshDecoder {
 	}
 
 	public int readZlib(byte[] pixels,int offset,int length) throws java.io.IOException {
-		if (zStream == null)
-			zStream = new ZInputStream(new BufferedInputStream(new FileInputStream(file.getFD())));
-		return zStream.read(pixels, offset, length);
-	}
 
+		if (zStream == null){
+			BufferedInputStream in = new BufferedInputStream( new FileInputStream( file.getFD() ) );				
+			zStream = new InflaterInputStream( in, new Inflater(), length );				
+		}
+		return zStream.read(pixels, offset, length);		
+	}
+	/**
+	 * Get AmiraMesh data as a stack
+	 * @return image info a stack
+	 */
 	public ImageStack getStack() {
 		if(file==null || endOffsetOfPreamble<0)
 			return null;
@@ -271,6 +275,8 @@ public class AmiraMeshDecoder {
 			e.printStackTrace();
 			IJ.error("internal: "+e.toString());
 		}
+		
+		IJ.showProgress( 1.0 );
 		return stack;
 	}
 

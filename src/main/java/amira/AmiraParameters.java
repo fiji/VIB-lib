@@ -91,7 +91,7 @@ public class AmiraParameters {
 			// Amira's bounding box is actually the range of the CENTRES
 			// of the outer voxels.
 			// Of course this means that the bounding box is defined if any of x,y,z are 1
-			// This is ususally only going to be a problem in z
+			// This is usually only going to be a problem in z
 			int zPosToGet = (stack==null?1:stack.getSize())-1;
 			// investigating what amira does in these circs suggests that
 			// it actually pretends that a single slice image does have a z thickness
@@ -102,7 +102,7 @@ public class AmiraParameters {
 			// then the imagej origin should be displaced by dx/2,dy/2,dz/2 
 			// ie half a voxel dimension in each axis
 			// But since nearly everyone expects the default origin to be 0,0,0 
-			// in both programs we are sligtly stuck.
+			// in both programs we are slightly stuck.
 			put("BoundingBox", cal.getX(0)+" "+
 					cal.getX(imp.getWidth()-1)+" "+
 					cal.getY(0)+" "+
@@ -464,21 +464,27 @@ public class AmiraParameters {
 		if(boundingBox.hasMoreTokens())
 			cal.xOrigin = -Double.parseDouble(boundingBox.nextToken());
 		if(boundingBox.hasMoreTokens()) {
-			cal.pixelWidth = (Double.parseDouble(boundingBox.nextToken())+cal.xOrigin)/width;
-			if(cal.pixelWidth!=0)
+			cal.pixelWidth = ( width != 1 ) ? 
+					(Double.parseDouble(boundingBox.nextToken())+cal.xOrigin)/(width-1) :
+					(Double.parseDouble(boundingBox.nextToken())+cal.xOrigin);
+			if(cal.pixelWidth !=0 )
 				cal.xOrigin/=cal.pixelWidth;
 		}
 		if(boundingBox.hasMoreTokens())
 			cal.yOrigin = -Double.parseDouble(boundingBox.nextToken());
 		if(boundingBox.hasMoreTokens()) {
-			cal.pixelHeight = (Double.parseDouble(boundingBox.nextToken())+cal.yOrigin)/height;
+			cal.pixelHeight = ( height != 1 ) ? 
+					(Double.parseDouble(boundingBox.nextToken())+cal.yOrigin)/(height-1) :
+					(Double.parseDouble(boundingBox.nextToken())+cal.yOrigin);
 			if(cal.pixelHeight!=0)
 				cal.yOrigin/=cal.pixelHeight;
 		}
 		if(boundingBox.hasMoreTokens())
 			cal.zOrigin = -Double.parseDouble(boundingBox.nextToken());
 		if(boundingBox.hasMoreTokens()) {
-			cal.pixelDepth = (Double.parseDouble(boundingBox.nextToken())+cal.zOrigin)/depth;
+			cal.pixelDepth = (depth != 1 ) ?
+					(Double.parseDouble(boundingBox.nextToken())+cal.zOrigin)/(depth-1) :
+					(Double.parseDouble(boundingBox.nextToken())+cal.zOrigin);	
 			if(cal.pixelDepth!=0)
 				cal.zOrigin/=cal.pixelDepth;
 		}

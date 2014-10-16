@@ -4,24 +4,16 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.process.ByteProcessor;
-import ij.text.TextPanel;
-import ij.text.TextWindow;
-import ij.util.Tools;
-import java.io.File;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.RandomAccessFile;
-import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.regex.*;
-import java.util.Properties;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
 import java.util.Hashtable;
 import java.util.Vector;
-import java.util.Enumeration;
-import com.jcraft.jzlib.JZlib;
-import com.jcraft.jzlib.ZOutputStream;
 
 public class AmiraMeshEncoder {
 	private int width,height,numSlices;
@@ -38,7 +30,7 @@ public class AmiraMeshEncoder {
 	private String line;
 	private byte[] rleOverrun;
 	private int rleOverrunLength;
-	private ZOutputStream zStream;
+	private DeflaterOutputStream zStream;
 	private int zLength;
 
 	public AmiraMeshEncoder(String path_) {
@@ -61,7 +53,7 @@ public class AmiraMeshEncoder {
 	public boolean writeHeader(ImagePlus ip) {
 		try {
 			AmiraParameters parameters=new AmiraParameters(ip);
-			if (parameters.isAmiraLabelfield(ip))
+			if (AmiraParameters.isAmiraLabelfield(ip))
 				mode = RLE;
 			Date date=new Date();
 			file.writeBytes("# AmiraMesh 3D BINARY 2.0\n"
@@ -116,12 +108,17 @@ public class AmiraMeshEncoder {
 			for(int k=1;k<=numSlices;k++) {
 				ByteProcessor ipro=(ByteProcessor)is.getProcessor(k);
 				byte[] pixels=(byte[])ipro.getPixels();
-				if (mode == RLE)
-					writeRLE(pixels);
-				else if (mode == ZLIB)
-					writeZlib(pixels);
-				else
-					file.write(pixels);
+				
+				if( null != pixels )
+				{
+					if (mode == RLE)
+						writeRLE(pixels);
+					else if (mode == ZLIB)
+						writeZlib(pixels);
+					else
+						file.write(pixels);
+				}
+				
 				IJ.showProgress(k, numSlices);
 			}
 
@@ -144,6 +141,7 @@ public class AmiraMeshEncoder {
 			throw new RuntimeException(e.toString());
 		}
 
+		IJ.showProgress( 1.0 );
 		IJ.showStatus("");
 
 		return true;
@@ -172,8 +170,11 @@ public class AmiraMeshEncoder {
 	}
 
 	public void writeZlib(byte[] pixels) throws IOException {
-		if (zStream == null)
-			zStream = new ZOutputStream(new BufferedOutputStream(new FileOutputStream(file.getFD())), JZlib.Z_BEST_COMPRESSION);
+		BufferedOutputStream out;
+		if (zStream == null) {
+			out = new BufferedOutputStream(new FileOutputStream(file.getFD()));
+			zStream = new DeflaterOutputStream(out, new Deflater(), pixels.length );
+		}
 		zStream.write(pixels, 0, pixels.length);
 	}
 }
