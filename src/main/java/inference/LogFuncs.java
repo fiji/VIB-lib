@@ -1,6 +1,5 @@
 package inference;
 
-import java.lang.Math;
 
 public class LogFuncs {
 	private static final LogFuncs _theInstance=new LogFuncs();

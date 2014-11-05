@@ -1,16 +1,14 @@
 package vib.app;
 
+import ij.IJ;
+
 import java.io.File;
-import java.io.OutputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.io.OutputStream;
 import java.util.Properties;
-
-import ij.IJ;
 
 public class Options {
 	public final static String CONFIG_FILE = "options.config";

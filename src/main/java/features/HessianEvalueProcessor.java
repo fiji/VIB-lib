@@ -2,12 +2,10 @@
 
 package features;
 
-import ij.ImageJ;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.measure.Calibration;
-import ij.process.ImageProcessor;
 import ij.process.FloatProcessor;
 
 public abstract class HessianEvalueProcessor implements GaussianGenerationCallback {

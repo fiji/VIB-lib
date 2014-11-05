@@ -1,16 +1,13 @@
 package vib.app.module;
 
 import amira.AmiraParameters;
+import ij.ImagePlus;
 
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.IndexColorModel;
 
-import vib.app.Options;
-
 import vib.segment.CustomStackWindow;
-
-import ij.ImagePlus;
 
 public class Label extends Module {
 	public String getName() { return "Label"; }

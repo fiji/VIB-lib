@@ -1,7 +1,6 @@
 package vib;
 
 import ij.ImagePlus;
-import vib.InterpolatedImage;
 
 /*
 

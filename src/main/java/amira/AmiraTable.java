@@ -1,13 +1,10 @@
 package amira;
 
 import ij.WindowManager;
-
 import ij.macro.Interpreter;
-
 import ij.text.TextWindow;
 
 import java.text.DecimalFormat;
-
 import java.util.Hashtable;
 import java.util.Properties;
 

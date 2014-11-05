@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Formatter;
-import java.util.List;
 
 /**
  * This class contains the key information that describes a nrrd file

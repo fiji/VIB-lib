@@ -1,14 +1,10 @@
 package vib.app.module;
 
 import ij.ImagePlus;
-
-import vib.app.ImageMetaData;
-import vib.app.Options;
-
 import vib.DiffusionInterpol2;
 import vib.FloatMatrix;
 import vib.InterpolatedImage;
-import vib.TransformedImage;
+import vib.app.ImageMetaData;
 
 public class LabelDiffusionTransformation extends Module {
 	public String getName() { return "LabelDiffusionTransformation"; }

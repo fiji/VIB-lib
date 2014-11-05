@@ -1,6 +1,10 @@
 package vib.edge;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class CircleIterators {
 	public static int[][] FullCircle(double radius) {

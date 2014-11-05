@@ -2,15 +2,13 @@
 
 package util;
 
-import ij.*;
-import ij.process.*;
-import ij.gui.*;
-import ij.plugin.*;
-import ij.plugin.filter.*;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
 import ij.measure.Calibration;
+import ij.plugin.RGBStackMerge;
+import ij.process.StackConverter;
 import vib.TransformedImage;
-
-import java.util.ArrayList;
 
 public class OverlayRegistered {
 

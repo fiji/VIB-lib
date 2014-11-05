@@ -2,12 +2,10 @@
 
 package process3d;
 
-import ij.process.FloatProcessor;
-import ij.process.ByteProcessor;
-
+import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
-import ij.IJ;
+import ij.process.FloatProcessor;
 
 public class Convolve3d {
 

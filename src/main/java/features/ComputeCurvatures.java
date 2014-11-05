@@ -69,23 +69,19 @@
 package features;
 
 import ij.IJ;
-import ij.plugin.PlugIn;
-import ij.process.ImageProcessor;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.WindowManager;
 import ij.gui.GenericDialog;
-
-import ij.process.ByteProcessor;
-import ij.process.ShortProcessor;
-import ij.process.FloatProcessor;
-
 import ij.measure.Calibration;
-
-import math3d.Eigensystem3x3Float;
-import math3d.Eigensystem3x3Double;
-import math3d.Eigensystem2x2Float;
+import ij.process.ByteProcessor;
+import ij.process.FloatProcessor;
+import ij.process.ImageProcessor;
+import ij.process.ShortProcessor;
 import math3d.Eigensystem2x2Double;
+import math3d.Eigensystem2x2Float;
+import math3d.Eigensystem3x3Double;
+import math3d.Eigensystem3x3Float;
 import math3d.JacobiDouble;
 import math3d.JacobiFloat;
 

@@ -5,10 +5,10 @@
 
 package util;
 
-import ij.*;
-import ij.io.*;
+import ij.ImagePlus;
+import ij.io.FileInfo;
 
-import java.io.*;
+import java.io.File;
 
 public class FileAndChannel {
 

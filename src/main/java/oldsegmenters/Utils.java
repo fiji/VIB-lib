@@ -2,17 +2,10 @@ package oldsegmenters;
 
 import ij.gui.ShapeRoi;
 
+import java.awt.Point;
 import java.awt.geom.PathIterator;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.Iterator;
-
-import math3d.Triangle;
-import math3d.Point3d;
 
 /**
  * User: Tom Larkworthy

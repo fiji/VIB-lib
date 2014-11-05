@@ -1,12 +1,11 @@
 package vib.segment;
 
-import ij.measure.Calibration;
 import ij.ImagePlus;
-import ij.IJ;
-import vib.SegmentationViewerCanvas;
-import java.awt.*;
-import java.awt.event.*;
+
+import java.awt.Dimension;
 import java.util.Vector;
+
+import vib.SegmentationViewerCanvas;
 
 public class CustomCanvas extends SegmentationViewerCanvas {
 

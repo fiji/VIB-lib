@@ -2,13 +2,6 @@
 
 package vib.transforms;
 
-import ij.*;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import landmarks.NamedPointWorld;
-import landmarks.NamedPointSet;
 
 public class BoundsInclusive {
 

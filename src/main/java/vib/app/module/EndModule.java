@@ -1,6 +1,5 @@
 package vib.app.module;
 
-import vib.app.gui.Console;
 
 public class EndModule extends Module {
 	public String getName() { return "EndModule"; }

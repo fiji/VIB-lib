@@ -28,16 +28,17 @@
 
 package stacks;
 
-import ij.*;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.gui.ImageCanvas;
+import ij.gui.StackWindow;
 import ij.process.ByteProcessor;
-import ij.process.ShortProcessor;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
-import ij.gui.*;
+import ij.process.ShortProcessor;
 
 import java.awt.image.ColorModel;
-
-import java.io.*;
 
 public class ThreePanes implements PaneOwner {
 

@@ -1,16 +1,29 @@
 package vib;
 
-import java.awt.*;
-import java.awt.image.*;
-import java.awt.event.*;
-import java.io.*;
-import java.awt.datatransfer.*;
-import ij.*;
-import ij.gui.*;
-import ij.process.*;
-import ij.measure.*;
+import ij.IJ;
+import ij.gui.ImageWindow;
+import ij.gui.NewImage;
+import ij.measure.Measurements;
 import ij.plugin.filter.Analyzer;
+import ij.process.ImageProcessor;
 import ij.text.TextWindow;
+
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.Rectangle;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
 
 /** This class is an extended ImageWindow that displays histograms. */
 public class ShowHistogram extends ImageWindow implements Measurements, ActionListener, ClipboardOwner {

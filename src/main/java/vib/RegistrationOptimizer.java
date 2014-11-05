@@ -2,12 +2,15 @@
 
 package vib;
 
-import pal.math.*;
-import math3d.*;
 import ij.IJ;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+
+import math3d.Point3d;
+import pal.math.ConjugateDirectionSearch;
+import pal.math.MultivariateFunction;
 import util.StupidLog;
 
 public abstract class RegistrationOptimizer {

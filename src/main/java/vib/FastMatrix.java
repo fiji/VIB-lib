@@ -4,12 +4,14 @@ package vib;
 
 import ij.ImagePlus;
 import ij.measure.Calibration;
+
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+import math3d.FastMatrixN;
+import math3d.JacobiDouble;
 import math3d.Point3d;
 import math3d.Triangle;
-import math3d.JacobiDouble;
-import math3d.FastMatrixN;
 
 public class FastMatrix {
 

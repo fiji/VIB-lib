@@ -5,8 +5,6 @@ import ij.ImagePlus;
 
 import java.awt.image.IndexColorModel;
 
-import vib.app.gui.Console;
-
 public class Show extends Module {
 	public String getName() { return "Show"; }
 	protected String getMessage() { return "Displaying the results"; }

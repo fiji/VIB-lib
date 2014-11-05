@@ -1,16 +1,15 @@
 package video;
 
-import java.io.File;
-import java.util.Vector;
-import java.util.Arrays;
-import java.text.DecimalFormat;
-
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
+import ij.io.FileSaver;
 import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
-import ij.io.FileSaver;
+
+import java.io.File;
+import java.text.DecimalFormat;
+import java.util.Arrays;
 
 public class VideoStack {
 

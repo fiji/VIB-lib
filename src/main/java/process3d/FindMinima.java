@@ -1,15 +1,13 @@
 package process3d;
 
-import ij.ImageStack;
-import ij.ImagePlus;
 import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
 import ij.process.ImageProcessor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Stack;
-import java.util.ArrayList;
-import java.util.HashSet;
 
 public class FindMinima {
 

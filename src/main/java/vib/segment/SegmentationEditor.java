@@ -1,14 +1,11 @@
 package vib.segment;
-import ij.measure.Calibration;
-import ij.plugin.*;
-import ij.*;
-import ij.gui.*;
-import ij.process.*;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.WindowManager;
+import ij.plugin.PlugIn;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import vib.SegmentationViewerCanvas;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Segmentation_Editor : ImageJ plugin.

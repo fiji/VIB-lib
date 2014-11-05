@@ -3,15 +3,10 @@ package vib;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
-import ij.gui.GenericDialog;
-import ij.process.ByteProcessor;
-import ij.process.ImageProcessor;
 import ij.gui.Roi;
 import ij.plugin.filter.ThresholdToSelection;
-import java.util.ArrayList;
-import java.util.Iterator;
-import math3d.Point3d;
-import math3d.FastMatrixN;
+import ij.process.ByteProcessor;
+import ij.process.ImageProcessor;
 
 /*
  * This plugin takes a binary stack as input, where some slices are

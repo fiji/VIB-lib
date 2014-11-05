@@ -6,7 +6,6 @@ import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.measure.Calibration;
-import ij.process.ImageProcessor;
 import math3d.Point3d;
 
 public class InterpolatedImage {

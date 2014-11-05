@@ -5,7 +5,6 @@
 package vib;
 
 import ij.IJ;
-
 import ij.macro.Interpreter;
 
 import java.awt.Dimension;

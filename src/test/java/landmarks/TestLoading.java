@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
 
+import org.junit.Assume;
 import org.junit.Test;
 
 import util.BatchOpener;

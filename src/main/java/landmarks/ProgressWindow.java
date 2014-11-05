@@ -2,17 +2,17 @@
 
 package landmarks;
 
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.gui.ImageCanvas;
+import ij.gui.StackWindow;
+import ij.process.ColorProcessor;
+
 import java.awt.Button;
 import java.awt.Label;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-
-import ij.gui.StackWindow;
-import ij.gui.ImageCanvas;
-import ij.process.ColorProcessor;
-import ij.*;
-
 /* This is subclassing StackWindow since I think we can probably get
  * away with just adding components to the bottom of the StackWindow. */
 import java.util.ArrayList;

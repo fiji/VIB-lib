@@ -2,10 +2,8 @@
 
 package util;
 
-import ij.*;
-import ij.process.*;
-import ij.plugin.*;
-import ij.io.*;
+import ij.ImagePlus;
+import ij.ImageStack;
 
 public class Limits {
 

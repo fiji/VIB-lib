@@ -1,24 +1,22 @@
 package oldsegmenters;
 
-import adt.Sparse3DByteArray;
 import adt.Byte3DArray;
-import adt.Unsparse3DByteArray;
 import adt.ByteProbability;
+import adt.Sparse3DByteArray;
+import adt.Unsparse3DByteArray;
+import amira.AmiraMeshDecoder;
+import ij.ImagePlus;
+import ij.io.FileInfo;
+import ij.text.TextWindow;
 
-import java.util.HashMap;
-import java.util.StringTokenizer;
-import java.util.TreeSet;
-import java.util.LinkedHashMap;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import ij.text.TextWindow;
-import ij.io.FileInfo;
-import ij.ImagePlus;
-
-import amira.AmiraMeshDecoder;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 /**
  * User: Tom Larkworthy

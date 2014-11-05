@@ -2,13 +2,11 @@
 
 package landmarks;
 
-import ij.gui.StackWindow;
+import ij.ImagePlus;
 import ij.gui.ImageCanvas;
-import ij.process.ColorProcessor;
-import ij.*;
 
-import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Graphics;
 
 public class ProgressCanvas extends ImageCanvas {
 

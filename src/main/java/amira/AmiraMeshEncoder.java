@@ -5,15 +5,15 @@ import ij.ImagePlus;
 import ij.ImageStack;
 import ij.process.ByteProcessor;
 
-import java.io.IOException;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Date;
-import java.util.zip.Deflater;
-import java.util.zip.DeflaterOutputStream;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.zip.Deflater;
+import java.util.zip.DeflaterOutputStream;
 
 public class AmiraMeshEncoder {
 	private int width,height,numSlices;

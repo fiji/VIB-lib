@@ -1,20 +1,15 @@
 package util;
 
-import java.io.File;
-
+import static org.junit.Assert.assertTrue;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
 
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.*;
-
 import java.util.Random;
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class TestFindConnectedRegions {
 

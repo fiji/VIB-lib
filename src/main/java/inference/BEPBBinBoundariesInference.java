@@ -1,6 +1,5 @@
 package inference;
 
-import java.lang.Math;
 
 public class BEPBBinBoundariesInference extends BEPBInference implements InferenceCaller {
 	public BEPBBinBoundariesInference() {

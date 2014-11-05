@@ -23,9 +23,19 @@ package vib.segment;
  * TO THE SOFTWARE.
  */
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.MediaTracker;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.RGBImageFilter;
 import java.util.Iterator;
 import java.util.Vector;
 

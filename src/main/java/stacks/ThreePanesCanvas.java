@@ -28,11 +28,13 @@
 
 package stacks;
 
-import ij.*;
-import ij.gui.*;
+import ij.ImagePlus;
+import ij.gui.ImageCanvas;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 
 public class ThreePanesCanvas extends ImageCanvas {
 

@@ -1,12 +1,9 @@
 package oldsegmenters;
 
-import adt.PixelStats;
 import adt.ByteProbability;
+import ij.IJ;
 
 import java.io.IOException;
-import java.util.HashMap;
-
-import ij.IJ;
 
 /**
  * User: Tom Larkworthy

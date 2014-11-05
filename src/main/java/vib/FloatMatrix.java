@@ -4,12 +4,14 @@ package vib;
 
 import ij.ImagePlus;
 import ij.measure.Calibration;
+
 import java.util.StringTokenizer;
 import java.util.Vector;
+
+import math3d.FloatMatrixN;
+import math3d.JacobiFloat;
 import math3d.Point3d;
 import math3d.Triangle;
-import math3d.JacobiFloat;
-import math3d.FloatMatrixN;
 
 public class FloatMatrix {
 

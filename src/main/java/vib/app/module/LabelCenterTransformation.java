@@ -1,17 +1,14 @@
 package vib.app.module;
 
 import distance.TwoValues;
-
 import ij.ImagePlus;
 import util.StupidLog;
-
-import vib.app.ImageMetaData;
-import vib.app.Options;
-
 import vib.FastMatrix;
 import vib.FloatMatrix;
 import vib.RigidRegistration;
 import vib.TransformedImage;
+import vib.app.ImageMetaData;
+import vib.app.Options;
 
 public class LabelCenterTransformation extends Module {
 	public String getName() { return "LabelCenterTransformation"; }

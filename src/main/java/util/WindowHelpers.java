@@ -2,8 +2,8 @@
 
 package util;
 
-import ij.WindowManager;
 import ij.ImagePlus;
+import ij.WindowManager;
 
 public class WindowHelpers {
 	

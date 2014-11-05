@@ -3,13 +3,10 @@
 package vib;
 
 import amira.AmiraParameters;
-
-import ij.*;
-import ij.gui.*;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
 import ij.measure.Calibration;
-import ij.plugin.*;
-import ij.process.*;
-import ij.plugin.filter.*;
 
 /* This plugin takes a binned image as input. It then reassigns equally spaced
    gray values to the pixels. */

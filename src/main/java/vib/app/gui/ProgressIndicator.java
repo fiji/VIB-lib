@@ -2,16 +2,23 @@
 
 package vib.app.gui;
 
-import java.io.File;
-import java.awt.*;
-
-import ij.IJ;
 import ij.ImagePlus;
-import ij.process.ImageProcessor;
 import ij.process.ColorProcessor;
+import ij.process.ImageProcessor;
 
-import vib.app.module.*;
-import vib.app.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Frame;
+
+import vib.app.Options;
+import vib.app.module.AverageBrain;
+import vib.app.module.Module;
+import vib.app.module.ModuleListener;
+import vib.app.module.Resample;
+import vib.app.module.SplitChannels;
+import vib.app.module.TissueStatistics;
+import vib.app.module.TransformImages;
 
 public class ProgressIndicator implements ModuleListener {
 

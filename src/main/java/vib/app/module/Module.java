@@ -1,7 +1,8 @@
 package vib.app.module;
 
-import java.util.Vector;
 import java.util.Iterator;
+import java.util.Vector;
+
 import vib.app.gui.Console;
 
 public abstract class Module {

@@ -1,8 +1,8 @@
 package vib;
 
 import ij.IJ;
-import ij.ImagePlus;
-import math3d.*;
+import math3d.Bookstein;
+import math3d.Point3d;
 
 public class ElasticTransformedImage {
 	InterpolatedImage orig, trans;

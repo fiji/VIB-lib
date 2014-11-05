@@ -3,14 +3,10 @@
 package vib.oldregistration;
 
 import ij.ImagePlus;
-import ij.IJ;
-import ij.WindowManager;
-
+import landmarks.NamedPointSet;
+import math3d.Point3d;
 import util.BatchOpener;
 import util.FileAndChannel;
-import math3d.Point3d;
-
-import landmarks.NamedPointSet;
 
 public abstract class RegistrationAlgorithm {
 

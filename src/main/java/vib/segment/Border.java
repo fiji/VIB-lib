@@ -24,7 +24,9 @@ package vib.segment;
  * TO THE SOFTWARE.
  */
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Insets;
  
 /**
  * Border - draws a configurable border

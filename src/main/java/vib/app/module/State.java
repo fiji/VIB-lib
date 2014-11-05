@@ -6,10 +6,9 @@ import ij.io.FileSaver;
 
 import java.io.File;
 
+import vib.FloatMatrix;
 import vib.app.ImageMetaData;
 import vib.app.Options;
-
-import vib.FloatMatrix;
 
 /*
  * Convention: index < 0 means template, channel < 0 means labels

@@ -1,30 +1,19 @@
 package vib.segment;
 
-import ij.IJ;
 import ij.ImagePlus;
-
-import ij.gui.Roi;
 import ij.gui.GenericDialog;
-
+import ij.gui.Roi;
 import ij.plugin.filter.ThresholdToSelection;
-
-import ij.process.ImageProcessor;
 import ij.process.ByteProcessor;
+import ij.process.ImageProcessor;
 
 import java.awt.Checkbox;
 import java.awt.Rectangle;
 import java.awt.Scrollbar;
-
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowAdapter;
-
-import java.awt.image.ColorModel;
-import java.awt.image.IndexColorModel;
-
 import java.util.Arrays;
 import java.util.Vector;
 

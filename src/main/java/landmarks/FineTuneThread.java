@@ -2,10 +2,8 @@
 
 package landmarks;
 
-import ij.IJ;
 import ij.ImagePlus;
 import pal.math.ConjugateDirectionSearch;
-import vib.FastMatrix;
 
 /* This can all get very confusing, so to make my convention clear:
 

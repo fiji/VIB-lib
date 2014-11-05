@@ -2,24 +2,19 @@
 
 package util;
 
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.gui.GenericDialog;
+import ij.plugin.PlugIn;
+import ij.process.ByteProcessor;
+import ij.process.FloatProcessor;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import process3d.DistanceTransform3D;
-
-import ij.IJ;
-import ij.gui.GenericDialog;
-import ij.WindowManager;
-import ij.plugin.PlugIn;
-import ij.process.FloatProcessor;
-import ij.process.ByteProcessor;
-import ij.process.ShortProcessor;
-import ij.process.ImageProcessor;
-import ij.ImagePlus;
-import ij.ImageStack;
-import ij.io.Opener;
-
 import vib.app.FileGroup;
 import vib.app.gui.FileGroupDialog;
 

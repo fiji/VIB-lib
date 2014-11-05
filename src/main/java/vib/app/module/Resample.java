@@ -1,9 +1,6 @@
 package vib.app.module;
 
 import ij.ImagePlus;
-
-import vib.app.Options;
-
 import vib.NaiveResampler;
 
 public class Resample extends Module {

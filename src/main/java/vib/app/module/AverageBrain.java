@@ -1,16 +1,12 @@
 package vib.app.module;
 
 import amira.AmiraParameters;
-
 import ij.IJ;
 import ij.ImagePlus;
 
-import java.awt.*;
-import java.awt.image.*;
-
-import java.io.File;
-
-import java.util.*;
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
+import java.util.Vector;
 
 import vib.FastMatrix;
 import vib.InterpolatedImage;

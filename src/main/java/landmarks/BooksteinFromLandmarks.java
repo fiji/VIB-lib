@@ -2,27 +2,16 @@
 
 package landmarks;
 
-import ij.*;
-import ij.process.*;
-import ij.gui.*;
-import ij.plugin.*;
-import ij.plugin.filter.*;
-
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
 import ij.measure.Calibration;
+import ij.process.ByteProcessor;
 
-import java.awt.Color;
-import java.io.*;
+import java.util.ArrayList;
 
 import math3d.Bookstein;
 import math3d.Point3d;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Comparator;
-
-import vib.FastMatrix;
-import landmarks.NamedPointWorld;
 import vib.oldregistration.RegistrationAlgorithm;
 
 public class BooksteinFromLandmarks extends RegistrationAlgorithm {

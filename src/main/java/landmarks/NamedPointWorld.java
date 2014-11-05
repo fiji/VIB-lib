@@ -2,30 +2,10 @@
 
 package landmarks;
 
-import ij.*;
-import ij.process.*;
-import ij.io.*;
-import ij.gui.*;
-import ij.plugin.*;
-import ij.plugin.filter.*;
-import ij.text.*;
-
-
-import java.io.*;
-
 import math3d.Point3d;
-
-import vib.transforms.OrderedTransformations;
-
-import java.awt.*;
-import java.awt.event.*;
-
-import java.io.*;
-import java.util.regex.*;
-
 import util.XMLFunctions;
-
 import vib.FastMatrix;
+import vib.transforms.OrderedTransformations;
 
 /* This class replaces the old NamedPoint class, the difference being
    that these objects hold world co-ordinates rather than image

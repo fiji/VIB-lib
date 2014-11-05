@@ -10,39 +10,40 @@ package landmarks;
 
 import ij.IJ;
 import ij.ImagePlus;
-import ij.gui.ImageCanvas;
 import ij.gui.PointRoi;
 import ij.gui.Roi;
 import ij.io.FileInfo;
 import ij.measure.Calibration;
+
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.StringReader;
 import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
+import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
-import java.util.StringTokenizer;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.HashSet;
-import java.util.Set;
-import math3d.Point3d;
-import vib.transforms.FastMatrixTransform;
-import vib.transforms.OrderedTransformations;
-import javax.xml.parsers.SAXParserFactory;
+
 import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import math3d.Point3d;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
-import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
 import util.BatchOpener;
 import util.opencsv.CSVReader;
+import vib.transforms.OrderedTransformations;
 
 public class NamedPointSet {
 

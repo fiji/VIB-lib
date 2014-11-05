@@ -2,10 +2,11 @@
 
 package util;
 
-import ij.*;
-import ij.process.*;
-import ij.io.*;
-import ij.measure.*;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.measure.Calibration;
+import ij.process.ByteProcessor;
 
 public class RGBToLuminance {
 

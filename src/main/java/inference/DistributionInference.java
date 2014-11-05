@@ -1,6 +1,5 @@
 package inference;
 
-import java.lang.Math;
 
 public class DistributionInference extends Inference implements InferenceCaller {
 	public DistributionInference() {

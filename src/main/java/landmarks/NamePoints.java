@@ -28,36 +28,51 @@
 
 package landmarks;
 
-import ij.*;
-import ij.process.*;
-import ij.io.*;
-import ij.gui.*;
-import ij.plugin.*;
-import ij.plugin.filter.*;
-import ij.text.*;
+import client.ArchiveClient;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.Prefs;
+import ij.gui.GenericDialog;
+import ij.gui.ImageCanvas;
+import ij.gui.Roi;
+import ij.gui.YesNoCancelDialog;
+import ij.io.FileInfo;
+import ij.io.OpenDialog;
+import ij.io.SaveDialog;
+import ij.measure.Calibration;
+import ij.process.ColorProcessor;
 
-import java.applet.Applet;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Checkbox;
+import java.awt.Component;
+import java.awt.Dialog;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.Polygon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.regex.*;
-import java.text.DecimalFormat;
+import java.util.ListIterator;
 
-import client.ArchiveClient;
-import ij.measure.Calibration;
-import pal.math.MultivariateFunction;
 import stacks.ThreePaneCrop;
 import util.BatchOpener;
+import util.OverlayRegistered;
 import util.Penalty;
 import vib.FastMatrix;
 import vib.oldregistration.RegistrationAlgorithm;
-import util.OverlayRegistered;
 
 class PointsDialog extends Dialog implements ActionListener, WindowListener {
 

@@ -2,15 +2,18 @@
 
 package stacks;
 
-import ij.*;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.gui.ImageLayout;
+import ij.gui.StackWindow;
 import ij.process.ByteProcessor;
-import ij.gui.*;
 
-import java.awt.*;
-
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
-
-import java.io.*;
 
 public class ThreePaneContainer extends StackWindow 
 	implements PaneOwner, ActionListener {

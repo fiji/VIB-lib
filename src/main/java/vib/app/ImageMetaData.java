@@ -2,13 +2,10 @@ package vib.app;
 
 /* This class is only a wrapper around AmiraTable for the moment */
 
-import amira.AmiraTable;
 import amira.AmiraMeshDecoder;
+import amira.AmiraTable;
 import amira.AmiraTableEncoder;
-
 import ij.text.TextPanel;
-import ij.macro.Interpreter;
-import ij.IJ;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -2,16 +2,11 @@
 
 package vib;
 
-import ij.ImagePlus;
-import util.BatchOpener;
-
-import org.junit.Test;
-import org.junit.Before;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-
-import vib.FastMatrix;
 import math3d.Point3d;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /* These are some very basic (and not very helpful) unit tests for
    FastMatrix - it would be great if people wanted to add to these. */

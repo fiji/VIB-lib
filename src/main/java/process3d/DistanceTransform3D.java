@@ -1,9 +1,7 @@
 package process3d;
 
 import ij.ImagePlus;
-import ij.IJ;
 import ij.ImageStack;
-import ij.process.ImageProcessor;
 import ij.process.ByteProcessor;
 import ij.process.FloatProcessor;
 

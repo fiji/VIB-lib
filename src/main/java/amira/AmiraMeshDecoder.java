@@ -2,14 +2,16 @@ package amira;
 
 import ij.IJ;
 import ij.ImageStack;
+
+import java.awt.image.ColorModel;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.RandomAccessFile;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
-import java.awt.image.*;
 
 public class AmiraMeshDecoder {
 	private int width,height,numSlices;

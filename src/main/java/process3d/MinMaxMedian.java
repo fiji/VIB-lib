@@ -2,14 +2,12 @@
 
 package process3d;
 
-import java.util.Arrays;
-
+import ij.IJ;
+import ij.ImagePlus;
+import ij.plugin.Duplicator;
 import ij.process.ImageProcessor;
 
-import ij.ImagePlus;
-import ij.IJ;
-
-import ij.plugin.Duplicator;
+import java.util.Arrays;
 
 /**
  * This class implements the minimum, maximum and median filter.

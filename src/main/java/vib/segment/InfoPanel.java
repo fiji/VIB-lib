@@ -1,6 +1,10 @@
 package vib.segment;
 
-import java.awt.*;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Label;
+import java.awt.Panel;
 
 public class InfoPanel extends Panel {
 	private Label lPosX, lPosY, lPosZ;

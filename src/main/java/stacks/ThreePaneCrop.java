@@ -26,23 +26,34 @@
 
 package stacks;
 
-import ij.*;
-import ij.gui.ImageCanvas;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.WindowManager;
 import ij.gui.GenericDialog;
 import ij.measure.Calibration;
-import ij.plugin.PlugIn;
 import ij.process.ByteProcessor;
-import ij.process.ShortProcessor;
 import ij.process.ColorProcessor;
 import ij.process.FloatProcessor;
+import ij.process.ShortProcessor;
 
-import java.awt.*;
-import java.awt.event.*;
-
+import java.awt.Button;
+import java.awt.Checkbox;
+import java.awt.Dialog;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.image.ColorModel;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import java.awt.image.ColorModel;
 
 /* A small dialog for confirming the region to crop and reporting
  * numerically what the current crop boundaries are. */

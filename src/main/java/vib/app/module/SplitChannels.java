@@ -1,15 +1,12 @@
 package vib.app.module;
 
 import ij.ImagePlus;
-import ij.ImageStack;
-import ij.process.ImageProcessor;
-import ij.process.StackConverter;
-import ij.plugin.filter.RGBStackSplitter;
-import ij.measure.Calibration;
 import ij.io.FileInfo;
+import ij.measure.Calibration;
+import ij.plugin.filter.RGBStackSplitter;
+import ij.process.StackConverter;
 
 import java.io.File;
-import java.awt.image.ColorModel;
 
 import util.BatchOpener;
 

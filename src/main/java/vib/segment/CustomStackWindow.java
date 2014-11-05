@@ -1,20 +1,39 @@
 package vib.segment;
 
-import java.awt.*;
-import java.awt.event.*;
-
-import vib.BinaryInterpolator;
-
 import ij.IJ;
-import ij.measure.Calibration;
-import ij.gui.StackWindow;
-import ij.gui.Roi;
-import ij.gui.ImageLayout;
 import ij.ImagePlus;
-import ij.ImageStack;
+import ij.gui.ImageLayout;
+import ij.gui.Roi;
+import ij.gui.StackWindow;
+import ij.measure.Calibration;
+import ij.plugin.filter.ThresholdToSelection;
 import ij.process.ByteProcessor;
 import ij.process.ImageProcessor;
-import ij.plugin.filter.ThresholdToSelection;
+
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Panel;
+import java.awt.Rectangle;
+import java.awt.Scrollbar;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+
+import vib.BinaryInterpolator;
 
 public class CustomStackWindow extends StackWindow
 				 implements AdjustmentListener, 

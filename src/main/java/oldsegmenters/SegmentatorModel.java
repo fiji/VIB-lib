@@ -1,8 +1,7 @@
 package oldsegmenters;
 
-import ij.ImagePlus;
-
 import amira.AmiraParameters;
+import ij.ImagePlus;
 import vib.SegmentationViewerCanvas;
 
 /**

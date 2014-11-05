@@ -1,6 +1,5 @@
 package inference;
 
-import java.lang.Math;
 
 public class BinClassificationInference extends BinBoundariesComputation implements InferenceCaller {
 	public BinClassificationInference() {

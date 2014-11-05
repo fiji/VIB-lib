@@ -3,10 +3,9 @@
  */
 package adt;
 
-import java.awt.*;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.TreeSet;
 
 /**
  * class that represents a collection of Points

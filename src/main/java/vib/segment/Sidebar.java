@@ -1,24 +1,27 @@
 package vib.segment;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
+import amira.AmiraParameters;
+import ij.ImagePlus;
+import ij.WindowManager;
 
+import java.awt.Checkbox;
+import java.awt.Choice;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Label;
+import java.awt.Panel;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.image.ImageProducer;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import java.io.File;
-import java.io.FileInputStream;
-
 import java.util.Vector;
 
-import ij.*;
-import ij.measure.Calibration;
-import ij.process.ImageProcessor;
-import ij.gui.GenericDialog;
-import ij.gui.Roi;
-
-import amira.AmiraParameters;
 import vib.InterpolatedImage;
 
 /**

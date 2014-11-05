@@ -1,15 +1,11 @@
 package vib.app.module;
 
-import amira.AmiraTable;
-
 import java.util.ArrayList;
 
 import math3d.Point3d;
-
+import vib.FloatMatrix;
 import vib.app.ImageMetaData;
 import vib.app.Options;
-
-import vib.FloatMatrix;
 
 public class CenterTransformation extends Module {
 	public String getName() { return "CenterTransformation"; }

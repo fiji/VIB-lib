@@ -9,22 +9,16 @@
 package vib.transforms;
 
 import ij.IJ;
-import ij.ImageJ;
-import ij.ImageStack;
-import ij.process.ColorProcessor;
-import ij.process.ByteProcessor;
 import ij.ImagePlus;
-import ij.plugin.filter.GaussianBlur;
-import ij.plugin.filter.PlugInFilter;
-import ij.WindowManager;
-
-import math3d.Point3d;
+import ij.ImageStack;
+import ij.process.ByteProcessor;
+import ij.process.ColorProcessor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import vib.FastMatrix;
+import math3d.Point3d;
 
 /* This class contains a sequence of transformations... */
 

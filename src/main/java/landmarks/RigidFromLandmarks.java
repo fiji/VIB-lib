@@ -2,26 +2,14 @@
 
 package landmarks;
 
-import ij.*;
-import ij.process.*;
-import ij.gui.*;
-
-import ij.measure.Calibration;
-
-import java.awt.Color;
-import java.io.*;
-
-import math3d.Point3d;
+import ij.IJ;
+import ij.ImagePlus;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Comparator;
 
-import landmarks.NamedPointWorld;
+import math3d.Point3d;
 import vib.FastMatrix;
 import vib.TransformedImage;
-
 import vib.oldregistration.RegistrationAlgorithm;
 
 public class RigidFromLandmarks extends RegistrationAlgorithm {

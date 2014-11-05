@@ -28,22 +28,15 @@ package vib;
 	20 pixels.
  */
 
-import amira.AmiraParameters;
-
-import distance.*;
-import ij.IJ;
+import distance.PixelPairs;
 import ij.ImagePlus;
-import ij.ImageStack;
-import ij.WindowManager;
-import ij.macro.Interpreter;
 import ij.measure.Calibration;
-import ij.text.TextWindow;
-import java.awt.Choice;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
+
 import math3d.Point3d;
-import pal.math.*;
 
 public class RigidRegistration {
 	String[] materials1, materials2;

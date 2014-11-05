@@ -37,24 +37,22 @@
 
 package client;
 
-import ij.*;
-import ij.process.*;
-import ij.gui.*;
-import ij.plugin.*;
-
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.HttpURLConnection;
-import java.net.URLEncoder;
-
-import java.util.Hashtable;
-import java.util.StringTokenizer;
-import java.util.Enumeration;
-import java.util.ArrayList;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.Macro;
+import ij.WindowManager;
 
 import java.applet.Applet;
-
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 
 class APIRequestThread extends Thread {
 

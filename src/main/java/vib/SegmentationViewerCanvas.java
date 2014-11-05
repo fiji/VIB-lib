@@ -3,7 +3,6 @@
 package vib;
 
 import amira.AmiraParameters;
-
 import ij.ImageListener;
 import ij.ImagePlus;
 import ij.gui.ImageCanvas;
@@ -11,14 +10,13 @@ import ij.gui.ImageCanvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.Shape;
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Vector;
-import java.util.HashMap;
 
 public class SegmentationViewerCanvas extends ImageCanvas {
 	final static int OUTLINE=1, FILL=2;

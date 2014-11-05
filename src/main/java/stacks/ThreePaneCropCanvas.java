@@ -26,11 +26,13 @@
 
 package stacks;
 
-import ij.*;
-import ij.gui.*;
+import ij.ImagePlus;
+import ij.gui.ImageCanvas;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.MouseEvent;
 
 /* This represents one of the square handles of the crop region. */
 

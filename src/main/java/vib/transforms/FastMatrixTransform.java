@@ -4,12 +4,8 @@ package vib.transforms;
 
 import ij.ImagePlus;
 import ij.measure.Calibration;
-import java.util.StringTokenizer;
-import java.util.Vector;
 import math3d.Point3d;
 import vib.FastMatrix;
-import math3d.Triangle;
-import math3d.JacobiDouble;
 
 public class FastMatrixTransform extends FastMatrix implements Transform {
 

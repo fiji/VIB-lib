@@ -1,15 +1,9 @@
 package vib.app.module;
 
 import amira.AmiraParameters;
-import amira.AmiraTable;
-import amira.AmiraTableEncoder;
-
 import ij.ImagePlus;
-
 import ij.measure.Calibration;
-
 import vib.InterpolatedImage;
-
 import vib.app.ImageMetaData;
 
 public class TissueStatistics extends Module {

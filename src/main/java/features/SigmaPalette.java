@@ -2,30 +2,23 @@
 
 package features;
 
-import ij.ImageJ;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.ImageStack;
-import ij.measure.Calibration;
-import ij.process.ImageProcessor;
-import ij.process.FloatProcessor;
-import ij.process.ByteProcessor;
-import ij.gui.Roi;
-import ij.gui.StackWindow;
 import ij.gui.ImageCanvas;
-import ij.gui.ImageWindow;
+import ij.gui.StackWindow;
+import ij.process.FloatProcessor;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Label;
+import java.awt.Scrollbar;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 
 import stacks.ThreePaneCrop;
-import ij.plugin.filter.Duplicater;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Polygon;
-import java.awt.Image;
-import java.awt.Scrollbar;
-import java.awt.Label;
-import java.awt.event.*;
-
 import util.Limits;
 
 public class SigmaPalette extends Thread {

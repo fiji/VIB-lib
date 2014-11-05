@@ -4,6 +4,10 @@ package vib;
 
 import static landmarks.TestLoading.getTestResourcePath;
 import static org.junit.Assert.assertTrue;
+import distance.Correlation;
+import distance.Euclidean;
+import distance.MutualInformation;
+import distance.TwoValues;
 import ij.ImageJ;
 import ij.ImagePlus;
 import ij.io.FileSaver;
@@ -15,10 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import util.BatchOpener;
-import distance.Correlation;
-import distance.Euclidean;
-import distance.MutualInformation;
-import distance.TwoValues;
 
 public class TestRigidRegistration {
 
