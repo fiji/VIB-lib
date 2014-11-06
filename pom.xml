@@ -8,7 +8,7 @@
 	<parent>
 		<groupId>sc.fiji</groupId>
 		<artifactId>pom-fiji</artifactId>
-		<version>5.0.1</version>
+		<version>5.0.2</version>
 		<relativePath />
 	</parent>
 
@@ -31,22 +31,28 @@
 	</developers>
 
 	<dependencies>
+		<!-- Fiji dependencies -->
 		<dependency>
-			<groupId>gov.nist.math</groupId>
-			<artifactId>jama</artifactId>
+			<groupId>sc.fiji</groupId>
+			<artifactId>pal-optimization</artifactId>
 		</dependency>
+
+		<!-- ImageJ dependencies -->
 		<dependency>
 			<groupId>net.imagej</groupId>
 			<artifactId>ij</artifactId>
 		</dependency>
+
+		<!-- Third party dependencies -->
+		<dependency>
+			<groupId>gov.nist.math</groupId>
+			<artifactId>jama</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>sc.fiji</groupId>
-			<artifactId>pal-optimization</artifactId>
 		</dependency>
 	</dependencies>
 
