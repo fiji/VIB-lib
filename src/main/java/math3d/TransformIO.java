@@ -46,7 +46,7 @@ public class TransformIO {
 	String getFields() {return nh==null?null:nh.getFieldStrings();}	
 	String getHeader() {return nh==null?null:nh.toString();}	
 
-	float[] openAffineTransform(String path) {
+	public float[] openAffineTransform(String path) {
 		nh=new NrrdHeader();
 		float[] mat = new float[matSize];
 		try {
