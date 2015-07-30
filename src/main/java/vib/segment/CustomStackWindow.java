@@ -32,6 +32,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowEvent;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import vib.BinaryInterpolator;
 
@@ -54,6 +57,8 @@ public class CustomStackWindow extends StackWindow
 	private CustomCanvas cc;
 	private Button ok;
 
+	/** executor service to launch threads for the window methods and events */
+	final ExecutorService exec = Executors.newFixedThreadPool( 1 );
 	
 
 	public CustomStackWindow(ImagePlus imp) {
@@ -468,35 +473,44 @@ public class CustomStackWindow extends StackWindow
 	/*
 	 * ActionListener interface
 	 */
-	public void actionPerformed(ActionEvent e) {
-		String command = e.getActionCommand();
-		if (command.equals("zoomin")) {
-			cc.zoomIn(cc.getWidth()/2, cc.getHeight()/2);
-			cc.requestFocus();
-		} else if (command.equals("zoomout")) {
-			cc.zoomOut(cc.getWidth()/2, cc.getHeight()/2);
-			cc.requestFocus();
-		} else if (command.equals("plus")) {
-			processPlusButton();
-		} else if (command.equals("minus")) {
-			processMinusButton();
-		} else if (command.equals("interpolate")) {
-			processInterpolateButton();
-		} else if (command.equals("threshold")) {
-			processThresholdButton();
-		} else if (command.equals("open")) {
-			processOpenButton();
-		} else if (command.equals("close")) {
-			processCloseButton();
-		} else if (command.equals("Ok")) {
-			// call the action listener before destroying the window
-			if(al != null)
-				al.actionPerformed(e);
-			if(getImagePlus() != null) {
-				new StackWindow(getImagePlus());
+	public void actionPerformed(final ActionEvent e) {
+		final String command = e.getActionCommand();
+		
+		exec.submit(new Runnable() {
+
+			public void run()
+			{
+		
+				if (command.equals("zoomin")) {
+					cc.zoomIn(cc.getWidth()/2, cc.getHeight()/2);
+					cc.requestFocus();
+				} else if (command.equals("zoomout")) {
+					cc.zoomOut(cc.getWidth()/2, cc.getHeight()/2);
+					cc.requestFocus();
+				} else if (command.equals("plus")) {
+					processPlusButton();
+				} else if (command.equals("minus")) {
+					processMinusButton();
+				} else if (command.equals("interpolate")) {
+					processInterpolateButton();
+				} else if (command.equals("threshold")) {
+					processThresholdButton();
+				} else if (command.equals("open")) {
+					processOpenButton();
+				} else if (command.equals("close")) {
+					processCloseButton();
+				} else if (command.equals("Ok")) {
+					// call the action listener before destroying the window
+					if(al != null)
+						al.actionPerformed( e );
+					if(getImagePlus() != null) {
+						new StackWindow(getImagePlus());
+					}
+				}
 			}
-		}
+		});
 	}
+			
 
 	/*
 	 * AdjustmentListener interface
@@ -638,4 +652,16 @@ public class CustomStackWindow extends StackWindow
 			return foundSlice;
 	}
 
+	/**
+	 * Overwrite windowClosing to shut down the executor service
+	 */
+	@Override
+	public void windowClosing( WindowEvent e ) 
+	{							
+		super.windowClosing( e );
+
+		// shut down executor service
+		exec.shutdownNow();
+	}
+	
 }
