@@ -421,7 +421,10 @@ public class SegmentationViewerCanvas extends ImageCanvas {
 		if (labels == null)
 			return;
 		double magnification=getMagnification();
-
+		
+		if( null == contours[ slice - 1] )
+			return;
+		
 		for(int i=0;i<contours[slice-1].size();i++) {
 			g.setColor((Color)colors[slice-1].get(i));
 			Shape poly = (Shape)contours[slice-1].get(i);
