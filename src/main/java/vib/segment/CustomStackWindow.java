@@ -551,64 +551,69 @@ public class CustomStackWindow extends StackWindow
 	
 	public void keyPressed(KeyEvent e) {}
 
-	public void keyReleased(KeyEvent e) {
-		int c = e.getKeyCode();
-        char ch = e.getKeyChar();
-		if(c == KeyEvent.VK_DOWN || c == KeyEvent.VK_RIGHT || ch == '>'){
-			int newSlice = clamp(oldSlice + 1);
-			adjustmentValueChanged(new AdjustmentEvent(
-						sliceSelector,
-						AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
-						AdjustmentEvent.UNIT_INCREMENT,
-						newSlice));
-		} else if (c == KeyEvent.VK_UP || c == KeyEvent.VK_LEFT || ch == '<'){
-			int newSlice = clamp(oldSlice - 1);
-			adjustmentValueChanged(new AdjustmentEvent(
-						sliceSelector,
-						AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
-						AdjustmentEvent.UNIT_DECREMENT,
-						newSlice));
-		} else if (c == KeyEvent.VK_PAGE_UP){
-			int newSlice = clamp(oldSlice -5);
-			adjustmentValueChanged(new AdjustmentEvent(
-						sliceSelector,
-						AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
-						AdjustmentEvent.BLOCK_DECREMENT,
-						newSlice));
-		} else if (c == KeyEvent.VK_PAGE_DOWN){
-			int newSlice = clamp(oldSlice + 5);
-			adjustmentValueChanged(new AdjustmentEvent(
-						sliceSelector,
-						AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
-						AdjustmentEvent.BLOCK_INCREMENT,
-						newSlice));
-		} else if (ch == '.'){
-			int newSlice = nextRoiSlice();
-			adjustmentValueChanged(new AdjustmentEvent(
-						sliceSelector,
-						AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
-						AdjustmentEvent.BLOCK_INCREMENT,
-						newSlice));
-		} else if (ch == ','){
-			int newSlice = prevRoiSlice();
-			adjustmentValueChanged(new AdjustmentEvent(
-						sliceSelector,
-						AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
-						AdjustmentEvent.BLOCK_INCREMENT,
-						newSlice));
-		} else if (ch == '+' || ch == '='){
-			processPlusButton();
-		} else if (ch == '-'){
-			processMinusButton();
-		} else if (ch == 'i') {
-			processInterpolateButton();
-		} else if (ch == 't') {
-			processThresholdButton();
-		} else if (ch == 'o') {
-			processOpenButton();
-		} else if (ch == 'c') {
-			processCloseButton();
-		}
+	public void keyReleased(final KeyEvent e) {
+		exec.submit(new Runnable() {
+			public void run() 
+			{
+				int c = e.getKeyCode();
+				char ch = e.getKeyChar();
+				if(c == KeyEvent.VK_DOWN || c == KeyEvent.VK_RIGHT || ch == '>'){
+					int newSlice = clamp(oldSlice + 1);
+					adjustmentValueChanged(new AdjustmentEvent(
+							sliceSelector,
+							AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
+							AdjustmentEvent.UNIT_INCREMENT,
+							newSlice));
+				} else if (c == KeyEvent.VK_UP || c == KeyEvent.VK_LEFT || ch == '<'){
+					int newSlice = clamp(oldSlice - 1);
+					adjustmentValueChanged(new AdjustmentEvent(
+							sliceSelector,
+							AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
+							AdjustmentEvent.UNIT_DECREMENT,
+							newSlice));
+				} else if (c == KeyEvent.VK_PAGE_UP){
+					int newSlice = clamp(oldSlice -5);
+					adjustmentValueChanged(new AdjustmentEvent(
+							sliceSelector,
+							AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
+							AdjustmentEvent.BLOCK_DECREMENT,
+							newSlice));
+				} else if (c == KeyEvent.VK_PAGE_DOWN){
+					int newSlice = clamp(oldSlice + 5);
+					adjustmentValueChanged(new AdjustmentEvent(
+							sliceSelector,
+							AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
+							AdjustmentEvent.BLOCK_INCREMENT,
+							newSlice));
+				} else if (ch == '.'){
+					int newSlice = nextRoiSlice();
+					adjustmentValueChanged(new AdjustmentEvent(
+							sliceSelector,
+							AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
+							AdjustmentEvent.BLOCK_INCREMENT,
+							newSlice));
+				} else if (ch == ','){
+					int newSlice = prevRoiSlice();
+					adjustmentValueChanged(new AdjustmentEvent(
+							sliceSelector,
+							AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
+							AdjustmentEvent.BLOCK_INCREMENT,
+							newSlice));
+				} else if (ch == '+' || ch == '='){
+					processPlusButton();
+				} else if (ch == '-'){
+					processMinusButton();
+				} else if (ch == 'i') {
+					processInterpolateButton();
+				} else if (ch == 't') {
+					processThresholdButton();
+				} else if (ch == 'o') {
+					processOpenButton();
+				} else if (ch == 'c') {
+					processCloseButton();
+				}
+			}
+		});
 	}
 
 	protected int clamp(int targetSlice) {
