@@ -143,7 +143,7 @@ public class Thresholder {
 		byte[] c = (byte[])copy.getPixels();
 
 		int w = ip.getWidth(), h = ip.getHeight();
-		Rectangle bounds = roi.getBoundingRect();
+		Rectangle bounds = roi.getBounds();
 		int x1 = Math.min(0, bounds.x);
 		int y1 = Math.min(0, bounds.y);
 		int x2 = Math.max(w, x1 + bounds.width);
