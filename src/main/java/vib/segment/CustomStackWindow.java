@@ -429,36 +429,41 @@ public class CustomStackWindow extends StackWindow
 	public void mouseExited(MouseEvent e) {
 	}
 
-	public void mouseMoved(MouseEvent e) {
+	public void mouseMoved(final MouseEvent e) {
+		exec.submit(new Runnable() {
+			public void run() 
+			{
+				int x = cc.offScreenX(e.getX());
+				int y = cc.offScreenY(e.getY());
 
-		int x = cc.offScreenX(e.getX());
-		int y = cc.offScreenY(e.getY());
+				double posX, posY, posZ;
+				int voxelValue;
+				int materialID;
+				String materialName;
 
-		double posX, posY, posZ;
-		int voxelValue;
-		int materialID;
-		String materialName;
+				if(x<imp.getWidth() && y<imp.getHeight()) {
+					Calibration cal = imp.getCalibration();
+					posX = cal.getX(x);
+					posX = Double.valueOf(IJ.d2s(posX)).doubleValue();
 
-		if(x<imp.getWidth() && y<imp.getHeight()) {
-			Calibration cal = imp.getCalibration();
-			posX = cal.getX(x);
-			posX = Double.valueOf(IJ.d2s(posX)).doubleValue();
+					posY = cal.getY(y);
+					posY = Double.valueOf(IJ.d2s(posY)).doubleValue();
+					int z = imp.getCurrentSlice()-1;
+					posZ = cal.getZ(z);
+					posZ = Double.valueOf(IJ.d2s(posZ)).doubleValue();
 
-			posY = cal.getY(y);
-			posY = Double.valueOf(IJ.d2s(posY)).doubleValue();
-			int z = imp.getCurrentSlice()-1;
-			posZ = cal.getZ(z);
-			posZ = Double.valueOf(IJ.d2s(posZ)).doubleValue();
+					voxelValue = imp.getProcessor().get(x, y);
 
-			voxelValue = imp.getProcessor().get(x, y);
-			
-			materialID = cc.getLabels().getStack().getProcessor(z+1).get(x,y);
-			materialName = sidebar.getMaterials()
-								.params.getMaterialName(materialID);
-			
-			IJ.showStatus("x=" + posX + ", y=" + posY + ", z=" + posZ + 
-					", value=" + voxelValue + ", material=" + materialName);
-		}
+					materialID = 
+						cc.getLabels().getStack().getProcessor(z+1).get(x,y);
+					materialName = sidebar.getMaterials()
+							.params.getMaterialName(materialID);
+
+					IJ.showStatus("x=" + posX + ", y=" + posY + ", z=" + posZ + 
+						", value=" + voxelValue + ", material=" + materialName);
+				}
+			}
+		});
 	}	
 	
 	/*
@@ -515,12 +520,17 @@ public class CustomStackWindow extends StackWindow
 	/*
 	 * AdjustmentListener interface
 	 */
-	public synchronized void adjustmentValueChanged(AdjustmentEvent e) {
-		imp.setSlice(e.getValue());
-		sliceSelector.setValue(e.getValue());
-		// This seems to corrupt the scrollbar position.
-		//super.adjustmentValueChanged(e);
-		updateRois();
+	public synchronized void adjustmentValueChanged(final AdjustmentEvent e) {
+		exec.submit(new Runnable() {
+			public void run() 
+			{
+				imp.setSlice(e.getValue());
+				sliceSelector.setValue(e.getValue());
+				// This seems to corrupt the scrollbar position.
+				//super.adjustmentValueChanged(e);
+				updateRois();
+			}
+		});
 	}
 
 	public synchronized void updateRois() {
@@ -541,7 +551,12 @@ public class CustomStackWindow extends StackWindow
 
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		super.mouseWheelMoved(e);
-		updateRois();
+		exec.submit(new Runnable() {
+			public void run() 
+			{
+				updateRois();
+			}
+		});
 	}
 	
 	/*
