@@ -86,10 +86,13 @@ public class Thresholder {
 
 		image.updateAndDraw();
 		gd.showDialog();
-		restoreSlice();
-		image.updateAndDraw();
+		
 		if (gd.wasCanceled())
+		{			
+			restoreSlice();
+			image.updateAndDraw();
 			return;
+		}
 
 		minThreshold = (int)gd.getNextNumber();
 		maxThreshold = (int)gd.getNextNumber();
@@ -133,7 +136,7 @@ public class Thresholder {
 	 * Restore displayed image with saved copy.
 	 */
 	protected void restoreSlice() {
-		image.setProcessor(null, copy);
+		image.getStack().setProcessor(copy, image.getSlice());
 	}
 
 	/**
