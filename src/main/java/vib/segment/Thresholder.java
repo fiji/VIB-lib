@@ -98,6 +98,9 @@ public class Thresholder {
 		select();
 	}
 
+	/**
+	 * Set selection to thresholded area
+	 */
 	void select() {
 		ImageProcessor ip = copy.duplicate();
 		ImagePlus dummy = new ImagePlus("dummy", ip);
@@ -118,15 +121,26 @@ public class Thresholder {
 		}
 	}
 
+	/**
+	 * Keep a copy of initial slice and apply threshold.
+	 */
 	protected void initializeSlice() {
 		copy = image.getProcessor().duplicate();
 		apply();
 	}
 
+	/**
+	 * Restore displayed image with saved copy.
+	 */
 	protected void restoreSlice() {
 		image.setProcessor(null, copy);
 	}
 
+	/**
+	 * Apply threshold to displayed slice based on current ROI, minimum and 
+	 * maximum threshold values and number of erosion/dilation iterations.
+	 *  
+	 */
 	protected void apply() {
 		Roi roi = image.getRoi();
 		if (roi == null)
@@ -136,6 +150,17 @@ public class Thresholder {
 				erodeDilateIterations, showBinary);
 	}
 
+	/**
+	 * Apply threshold to input image. Pixels inside ROI get updated 
+	 * accordingly.
+	 * 
+	 * @param ip image to be thresholded
+	 * @param roi region of interest defining the area to be thresholded
+	 * @param min minimum threshold value
+	 * @param max maximum threshold value
+	 * @param erodeDilateIterations number of erosion/dilation iterations
+	 * @param makeBinary if true, mask out area outside roi
+	 */
 	protected void apply(ImageProcessor ip, Roi roi,
 			int min, int max, int erodeDilateIterations,
 			boolean makeBinary) {
