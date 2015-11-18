@@ -25,7 +25,7 @@ import nrrd.NrrdHeader;
  * These are available as float[16]
  * reading row-wise along the Affine Matrix
  * See Transform3D Java Doc for details
- * http://java.sun.com/products/java-media/3D/forDevelopers/J3D_1_3_API/j3dapi/javax/media/j3d/Transform3D.html
+ * http://javadoc.imagej.net/Java3D/javax/media/j3d/Transform3D.html
  * @author jefferis
  *
  */
