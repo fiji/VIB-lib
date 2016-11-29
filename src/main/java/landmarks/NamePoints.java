@@ -268,7 +268,7 @@ class PointsDialog extends Dialog implements ActionListener, WindowListener {
 			saveButton.addActionListener(this);
 			loadButton = new Button("Load");
 			loadButton.addActionListener(this);
-			igsSaveButton = new Button("Export to IGS");
+			igsSaveButton = new Button("Export to CMTK");
 			igsSaveButton.addActionListener(this);
 			resetButton = new Button("Reset All");
 			resetButton.addActionListener(this);
