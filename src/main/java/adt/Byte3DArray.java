@@ -1,3 +1,21 @@
+/*-
+ * Copyright 2009 Fiji developers.
+ * alksdjfa
+ * alksdjfa
+ * alksdjfa
+ * alksdjfa
+ * alksdjfa
+ * alksdjfa
+ * alksdjfa
+ * alksdjfa
+ * alksdjfa
+ * alksdjfa
+ * alksdjfa
+ * alksdjfa
+ * sdfklasjdf
+ *-
+ */
+
 package adt;
 
 /**
