@@ -19,44 +19,46 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-/** This class contains methods I would like to see incorporated into
-    HandleExtraFileTypes, or elsewhere.  The main features are:
-
-     * An open method that returns an array of ImagePlus objects,
-       one per channel, without calling show() on any of them.
-
-     * Files are identified as particular types by their content,
-       (magic numbers, etc.) rather then their file extension.  (The
-       exception to this is the TorstenRaw_GZ_Reader, since the image
-       files are raw and have no distinctive header.)
-
-     * The method doesn't rely on plugins being present at compile
-       time - instead it uses reflection to check whether the required
-       classes are available.  This is a bit ugly, but means that this
-       could be incorporated into the main ImageJ source code more
-       easily.
-
-    The types of file that should be coped with properly at the
-    moment are listed below:
-
-      Tested file types:
-
-	- Zeiss LSM files (using LSM_Toolbox rather than LSM_Reader)
-	- Leica SP files (using the Leica_SP_Reader plugin)
-	- Ordinary TIFF files (using the default ImageJ opener)
-	- AmiraMesh files (using the AmiraMeshReader plugin)
-
-      Untested file types (please send me example files!):
-
-	- Biorad PIC files (using the Biorad_Reader plugin)
-	- IPLab files (using the IPLab_Reader plugin)
-	- Packard InstantImager format (.img) files
-	- Gatan Digital Micrograph DM3 handler (DM3_Reader plugin)
-
-    Mark Longair <mark-imagej@longair.net>
-
+/**
+ * This class contains methods I would like to see incorporated into
+ * HandleExtraFileTypes, or elsewhere. The main features are:
+ * <ul>
+ * <li>An open method that returns an array of ImagePlus objects, one per
+ * channel, without calling show() on any of them.</li>
+ * <li>Files are identified as particular types by their content, (magic
+ * numbers, etc.) rather then their file extension.  (The exception to this is
+ * the TorstenRaw_GZ_Reader, since the image files are raw and have no
+ * distinctive header.)</li>
+ * <li>The method doesn't rely on plugins being present at compile time -
+ * instead it uses reflection to check whether the required classes are
+ * available.  This is a bit ugly, but means that this could be incorporated
+ * into the main ImageJ source code more easily.</li>
+ * </ul>
+ * <p>
+ * The types of file that should be coped with properly at the
+ * moment are listed below:
+ * </p>
+ * <p>
+ * Tested file types:
+ * </p>
+ * <ul>
+ * <li>Zeiss LSM files (using LSM_Toolbox rather than LSM_Reader)
+ * <li>Leica SP files (using the Leica_SP_Reader plugin)
+ * <li>Ordinary TIFF files (using the default ImageJ opener)
+ * <li>AmiraMesh files (using the AmiraMeshReader plugin)
+ * </ul>
+ * <p>
+ * Untested file types (please send me example files!):
+ * </p>
+ * <ul>
+ * <li>Biorad PIC files (using the Biorad_Reader plugin)</li>
+ * <li>IPLab files (using the IPLab_Reader plugin)</li>
+ * <li>Packard InstantImager format (.img) files</li>
+ * <li>Gatan Digital Micrograph DM3 handler (DM3_Reader plugin)</li>
+ * </ul>
+ *
+ * @author Mark Longair
  */
-
 public class BatchOpener {
 
 	public static class NoSuchChannelException extends Exception {
@@ -79,7 +81,7 @@ public class BatchOpener {
 	 * object.  If the file contains no channels, or the file is not found
 	 * this returns null.
 	 *
-	 * @param  the path of the image file to open
+	 * @param path the path of the image file to open
 	 */
 	public static ImagePlus openFirstChannel(String path) {
 		ImagePlus [] channels = BatchOpener.open(path);

@@ -245,7 +245,7 @@ public class Border implements Cloneable {
     /**
      * Sets the top margin
      *
-     * @param top           the top margin
+     * @param margin           the top margin
      */
 	public synchronized void setTopMargin( int margin ) {
 	    topMargin = margin;
@@ -255,7 +255,7 @@ public class Border implements Cloneable {
     /**
      * Sets the left margin
      *
-     * @param left          the left margin
+     * @param margin          the left margin
      */
 	public synchronized void setLeftMargin( int margin ) {
 	    leftMargin = margin;
@@ -265,7 +265,7 @@ public class Border implements Cloneable {
     /**
      * Sets the bottom margin
      *
-     * @param bottom        the bottom margin
+     * @param margin        the bottom margin
      */
 	public synchronized void setBottomMargin( int margin ) {
 	    bottomMargin = margin;
@@ -275,7 +275,7 @@ public class Border implements Cloneable {
     /**
      * Sets the right margin
      *
-     * @param right         the right margin
+     * @param margin         the right margin
      */
 	public synchronized void setRightMargin( int margin ) {
 	    rightMargin = margin;

@@ -25,7 +25,7 @@ import math3d.Point3d;
 
 
 /**
- * @date 07.08.2006
+ * Date: 07.08.2006
  *
  * @author Benjamin Schmid
  */

@@ -228,7 +228,7 @@ public class FloatMatrixN {
 	 * @param A matrix to be applied
 	 * @param b result
 	 * @return x
-	 * @see http://planetmath.org/?op=getobj&from=objects&id=1287
+	 * @see "http://planetmath.org/?op=getobj&from=objects&id=1287"
 	 */
 	public static float[] solve_cholesky(float[][]A, float[] b){
 

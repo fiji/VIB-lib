@@ -23,7 +23,7 @@ public class Connectivity2D {
 
     /**
      * the contract of calling this method is that the new point must be gauranteed to
-     * be the most far right lowest point (i.e. its x&y are greater or equal to all other points)
+     * be the most far right lowest point (i.e. its x&amp;y are greater or equal to all other points)
      * this gives a slight speedup
      * (though I think the bottle neck is the merging of Points)
      * @param p

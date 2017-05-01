@@ -55,7 +55,7 @@ public class DelaunayTriangulation extends Triangulation {
     /**
      * Locate the triangle with point (a Pnt) inside (or on) it.
      * @param point the Pnt to locate
-     * @return triangle (Simplex<Pnt>) that holds the point; null if no such triangle
+     * @return triangle that holds the point; null if no such triangle
      */
     public Simplex locate (Pnt point) {
         Simplex triangle = mostRecent;

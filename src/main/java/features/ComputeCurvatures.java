@@ -1,15 +1,5 @@
-/**
- * <p>Title: Principle Curvature Plugin for ImageJ</p>
- *
- * <p>Description: Computes the Principle Curvatures of for 2D and 3D
-   images except the pixels/voxels directly at the borders of the
-   image</p>
- *
- * <p>Copyright: Copyright (c) 2007</p>
- *
- * <p>Company: MPI-CBG</p>
- *
- * <p>License: GPL
+/*
+ * Copyright (c) 2007 MPI-CBG
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License 2
@@ -27,43 +17,6 @@
  * In addition, as a special exception, the copyright holders give
  * you permission to combine this program with free software programs or
  * libraries that are released under the Apache Public License. 
- *
- * @author Stephan Preibisch
- * @version 1.0
- *
- * Change in this version (Mark Longair):
- *
- * - Made the top level plugin a wrapper for this class so that
- *   "features" package so that it can be used by classes in other
- *   packages.
- *
- * - Now implements Runnable, with the void run() method creating
- *   the Gaussian and reporting progress via an optional callback.
- *   (If used in this way you need to use the constructor where you
- *   supply an ImagePlus, sigma and an optional callback.
- *
- * - Switched to using Johannes's JacobiDouble / JacobiFloat classes
- *   for finding the eigenvalues instead of the Jama classes, so we
- *   don't introduce an additional dependency.  It's about 15% faster
- *   with JacobiDouble, but I haven't yet measured any speed gain due
- *   to using floats rather than doubles.
- *
- * - Added options to only generate particular eigenvalue images, and
- *   some other slight changes to the initial dialog.
- *
- * - Added additional methods using floats for calculation (and the
- *   interface) in case clients only need floats.
- *
- * - Added ordering of the eigenvalues (optionally on absolute
- *   values).
- *
- * - Added normalisation of the eigenvalues to that the largest has
- *   size 1 (some papers use methods that require this)
- *
- * - Now we take notice of the calibration information (or not, if
- *   that option is deselected).
- *
- * - Use some faster eigenvalue calculation code for the 3x3 case.
  */
 
 package features;
@@ -85,6 +38,44 @@ import math3d.Eigensystem3x3Float;
 import math3d.JacobiDouble;
 import math3d.JacobiFloat;
 
+/**
+ * Principle Curvature Plugin for ImageJ
+ * <p>
+ * Description: Computes the Principle Curvatures of for 2D and 3D
+   images except the pixels/voxels directly at the borders of the
+   image
+	 </p>
+ * <p>
+ * Changes in this version:
+ * </p>
+ * <ul>
+ * <li>Made the top level plugin a wrapper for this class so that "features"
+ * package so that it can be used by classes in other packages.</li>
+ * <li>Now implements Runnable, with the void run() method creating the
+ * Gaussian and reporting progress via an optional callback. (If used in this
+ * way you need to use the constructor where you supply an ImagePlus, sigma and
+ * an optional callback.</li>
+ * <li>Switched to using Johannes's JacobiDouble / JacobiFloat classes for
+ * finding the eigenvalues instead of the Jama classes, so we don't introduce
+ * an additional dependency.  It's about 15% faster with JacobiDouble, but I
+ * haven't yet measured any speed gain due to using floats rather than
+ * doubles.</li>
+ * <li>Added options to only generate particular eigenvalue images, and some
+ * other slight changes to the initial dialog.</li>
+ * <li>Added additional methods using floats for calculation (and the
+ * interface) in case clients only need floats.</li>
+ * <li>Added ordering of the eigenvalues (optionally on absolute values).</li>
+ * <li>Added normalisation of the eigenvalues to that the largest has size 1
+ * (some papers use methods that require this)</li>
+ * <li>Now we take notice of the calibration information (or not, if that
+ * option is deselected).</li>
+ * <li>Use some faster eigenvalue calculation code for the 3x3 case.</li>
+ * </ul>
+ *
+ * @author Stephan Preibisch
+ * @author Mark Longair
+ * @version 1.0
+ */
 public class ComputeCurvatures implements Runnable
 {
     static class TrivialProgressDisplayer implements GaussianGenerationCallback {
@@ -137,9 +128,7 @@ public class ComputeCurvatures implements Runnable
     /**
      * This method will be called when running the PlugIn, it coordinates the main process.
      *
-     * @param args UNUSED
-
-     * @author   Stephan Preibisch
+     * @param arg UNUSED
      */
     public void runAsPlugIn(String arg)
     {
@@ -800,11 +789,9 @@ public class ComputeCurvatures implements Runnable
      *
      * @param image The image as FloatArray2D
      * @param name The name of the ImagePlus
-     * @param min Lowest brightness value that will be displayed (see Brightness&Contrast in Imagej)
+     * @param min Lowest brightness value that will be displayed (see Brightness&amp;Contrast in Imagej)
      * @param max Highest brightness value that will be displayed (set both to zero for automatic)
      * @return ImagePlus The ImageJ image
-     *
-     * @author   Stephan Preibisch
      */
     public static ImagePlus FloatArrayToImagePlus(FloatArray2D image, String name, float min, float max)
     {
@@ -825,11 +812,8 @@ public class ComputeCurvatures implements Runnable
     /**
      * This method converts my FloatArray2D to an ImageJ ImageProcessor
      *
-     * @param ImageProcessor Will be overwritten with the data from the FloatArray2D
-     * @param FloatArray2D The image as FloatArray2D
-     * @return
-     *
-     * @author   Stephan Preibisch
+     * @param ip ImageProcessor; will be overwritten with the data from the FloatArray2D
+     * @param pixels The image as FloatArray2D
      */
     public static void FloatArrayToFloatProcessor(ImageProcessor ip, FloatArray2D pixels)
     {
@@ -849,11 +833,9 @@ public class ComputeCurvatures implements Runnable
      *
      * @param image The image as FloatArray3D
      * @param name The name of the ImagePlus
-     * @param min Lowest brightness value that will be displayed (see Brightness&Contrast in Imagej)
+     * @param min Lowest brightness value that will be displayed (see Brightness&amp;Contrast in Imagej)
      * @param max Highest brightness value that will be displayed (set both to zero for automatic)
      * @return ImagePlus The ImageJ image
-     *
-     * @author   Stephan Preibisch
      */
     public ImagePlus FloatArrayToStack(FloatArray3D image, String name, float min, float max)
     {
@@ -895,10 +877,8 @@ public class ComputeCurvatures implements Runnable
      * <br>
      * Note: If the Eigenvalues contain imaginary numbers, this method will return null
      *
-     * @param double[][] The hessian Matrix
-     * @return double[] The Real Parts of the Eigenvalues or null (if there were imganiary parts)
-     *
-     * @author   Stephan Preibisch
+     * @param matrix The hessian Matrix
+     * @return The Real Parts of the Eigenvalues or null (if there were imganiary parts)
      */
 
     public double[] computeEigenValues(double[][] matrix) {
@@ -925,10 +905,8 @@ public class ComputeCurvatures implements Runnable
      * <br>
      * Note: If the Eigenvalues contain imaginary numbers, this method will return null
      *
-     * @param float[][] The hessian Matrix
-     * @return float[] The Real Parts of the Eigenvalues or null (if there were imganiary parts)
-     *
-     * @author   Stephan Preibisch
+     * @param matrix float[][] The hessian Matrix
+     * @return The Real Parts of the Eigenvalues or null (if there were imganiary parts)
      */
 
     public float[] computeEigenValues(float[][] matrix) {
@@ -954,12 +932,10 @@ public class ComputeCurvatures implements Runnable
      * xx xy <br>
      * yx yy <br>
      *
-     * @param img The image as FloatArray3D
+     * @param laPlace The image as FloatArray3D
      * @param x The x-position of the voxel
      * @param y The y-position of the voxel
      * @return double[][] The 2D - Hessian Matrix
-     *
-     * @author   Stephan Preibisch
      */
     public double[][] computeHessianMatrix2DDouble(FloatArray2D laPlace, int x, int y, double sigma, float sepX, float sepY)
     {
@@ -999,12 +975,13 @@ public class ComputeCurvatures implements Runnable
      * xx xy <br>
      * yx yy <br>
      *
-     * @param img The image as FloatArray3D
+     * @param laPlace The image as FloatArray3D
      * @param x The x-position of the voxel
      * @param y The y-position of the voxel
-     * @return float[][] The 2D - Hessian Matrix
-     *
-     * @author   Stephan Preibisch
+		 * @param sigma
+		 * @param sepX
+		 * @param sepY
+     * @return The 2D - Hessian Matrix
      */
     public float[][] computeHessianMatrix2DFloat(FloatArray2D laPlace, int x, int y, double sigma, float sepX, float sepY)
     {
@@ -1050,8 +1027,6 @@ public class ComputeCurvatures implements Runnable
      * @param y The y-position of the voxel
      * @param z The z-position of the voxel
      * @return double[][] The 3D - Hessian Matrix
-     *
-     * @author   Stephan Preibisch
      */
     public double[][] computeHessianMatrix3DDouble(FloatArray3D img, int x, int y, int z, double sigma, float sepX, float sepY, float sepZ)
     {
@@ -1116,8 +1091,6 @@ public class ComputeCurvatures implements Runnable
      * @param y The y-position of the voxel
      * @param z The z-position of the voxel
      * @return float[][] The 3D - Hessian Matrix
-     *
-     * @author   Stephan Preibisch
      */
     public float[][] computeHessianMatrix3DFloat(FloatArray3D img, int x, int y, int z, double sigma, float sepX, float sepY, float sepZ)
     {
@@ -1175,8 +1148,6 @@ public class ComputeCurvatures implements Runnable
      * @param sigma Standard Derivation of the gaussian function
      * @param normalize Normalize integral of gaussian function to 1 or not...
      * @return float[] The gaussian kernel
-     *
-     * @author   Stephan Saalfeld
      */
     public static float[] createGaussianKernel1D(float sigma, boolean normalize)
     {
@@ -1229,8 +1200,6 @@ public class ComputeCurvatures implements Runnable
      * @param input FloatProcessor which will be folded (will not be touched)
      * @param sigma Standard Derivation of the gaussian function
      * @return FloatProcessor The folded image
-     *
-     * @author   Stephan Preibisch
      */
     public FloatArray2D computeGaussianFastMirror(FloatArray2D input, float sigma, GaussianGenerationCallback callback, Calibration calibration)
     {
@@ -1330,8 +1299,6 @@ public class ComputeCurvatures implements Runnable
      * @param sigma Standard Derivation of the gaussian function
      * @param calibration Calibration data for the image, or null if we assume separation in all three dimensions is 1
      * @return FloatProcessor The folded image
-     *
-     * @author   Stephan Preibisch
      */
     public FloatArray3D computeGaussianFastMirror(FloatArray3D input, float sigma,  GaussianGenerationCallback callback, Calibration calibration)
     {
@@ -1465,8 +1432,6 @@ public class ComputeCurvatures implements Runnable
      *
      * @param stack ImageJ image stack
      * @return FloatArray3D The image packed into a FloatArray3D
-     *
-     * @author   Stephan Preibisch
      */
     public FloatArray3D StackToFloatArray(ImageStack stack)
     {
@@ -1534,10 +1499,8 @@ public class ComputeCurvatures implements Runnable
      * This method convertes an ImageJ ImageProcessor to my FloatArray2D,
      * which is a one dimensional structure with methods for 2D access
      *
-     * @param stack ImageJ ImageProcessor
+     * @param ip ImageJ ImageProcessor
      * @return FloatArray2D The image packed into a FloatArray2D
-     *
-     * @author   Stephan Preibisch
      */
     public FloatArray2D ImageToFloatArray(ImageProcessor ip)
     {
@@ -1584,8 +1547,6 @@ public class ComputeCurvatures implements Runnable
     /**
      * This class is the abstract class for my FloatArrayXDs,
      * which are a one dimensional structures with methods for access in n dimensions
-     *
-     * @author   Stephan Preibisch
      */
     public abstract class FloatArray
     {
@@ -1596,8 +1557,6 @@ public class ComputeCurvatures implements Runnable
 
     /**
      * The 2D implementation of the FloatArray
-     *
-     * @author   Stephan Preibisch
      */
     public class FloatArray2D extends FloatArray
     {
@@ -1704,8 +1663,6 @@ public class ComputeCurvatures implements Runnable
 
     /**
      * The 3D implementation of the FloatArray
-     *
-     * @author   Stephan Preibisch
      */
     public class FloatArray3D extends FloatArray
     {

@@ -332,7 +332,7 @@ public class Pnt {
      *   +1 means Pnt is on opposite side of facet</pre>
      * @param simplex an array of Pnts representing a simplex
      * @return an array of signs showing relation between this Pnt and the simplex
-     * @throws IllegalArgumentExcpetion if the simplex is degenerate
+     * @throws IllegalArgumentException if the simplex is degenerate
      */
     public int[] relation (Pnt[] simplex) {
         /* In 2D, we compute the cross of this matrix:

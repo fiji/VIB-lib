@@ -2,10 +2,11 @@ package adt;
 
 /**
  * Class used to track statistics with low memory footprint where large number data sets are expected
- * <p/>
+ * <p>
  * User: Tom Larkworthy
- * Date: 12-Jul-2006
- * Time: 15:25:56
+ * <br>Date: 12-Jul-2006
+ * <br>Time: 15:25:56
+ * </p>
  */
 public class PixelStats {
 

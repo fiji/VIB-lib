@@ -12,7 +12,10 @@ import java.util.Random;
 public class ByteProbability {
 
 	/**
-	 * converts from byte's to probabilities usage: BYTE_TO_DOUBLE[myByte&0xFF]
+	 * converts from byte's to probabilities
+	 * <p>
+	 * Usage: {@code BYTE_TO_DOUBLE[myByte&0xFF]}
+	 * </p>
 	 */
 	public static final double [] BYTE_TO_DOUBLE = new double[256]; //fast convertion between numbers 0-255 and doubles intervales [0.1]
 	public static final byte [] INTEGER_TO_BYTE = new byte[256]; //fast convertion between numbers 0-255 and unsigned bytes (packed in a signed byte)

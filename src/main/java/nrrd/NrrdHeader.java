@@ -13,15 +13,19 @@ import java.util.LinkedHashMap;
 
 /**
  * Class to read and represent the header of a NRRD file.
+ * <p>
  * This is for a generic nrrd reader.  The only special processing that it 
  * does is:
- * - change field names to lower case
- * - turn nrrd field names into a standard form 
- *   (e.g. "axismin"->"axis min")
- * - doesn't attempt to white space separate content field
- * - records content-type tag if present  
- * @author jefferis
+ * </p>
+ * <ul>
+ * <li>change field names to lower case</li>
+ * <li>turn nrrd field names into a standard form 
+ *  (e.g. "axismin"-&gt;"axis min")</li>
+ * <li>doesn't attempt to white space separate content field</li>
+ * <li>records content-type tag if present</li>
+ * </ul>
  *
+ * @author Greg Jefferis
  */
 public class NrrdHeader {
 	String filename,directory;
