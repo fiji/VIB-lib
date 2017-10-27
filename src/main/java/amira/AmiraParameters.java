@@ -134,7 +134,7 @@ public class AmiraParameters {
 	private static Pattern colorPattern;
 
 	private Properties parameters;
-	private Vector materials;
+	private Vector<String> materials;
 
 	private void assertPatternsInitialized() {
 		if(parameterKeyPattern==null) {
@@ -164,7 +164,7 @@ public class AmiraParameters {
 			if(m3.matches()) {
 				if(isMaterial) {
 					if(materials==null)
-						materials=new Vector();
+						materials=new Vector<String>();
 					materials.add(key);
 				}
 				line=m3.group(1);

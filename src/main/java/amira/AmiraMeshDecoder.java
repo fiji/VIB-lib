@@ -8,6 +8,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.Inflater;
@@ -26,6 +28,11 @@ public class AmiraMeshDecoder {
 	private RandomAccessFile file;
 	private long endOffsetOfPreamble;
 	private String line;
+
+	/** flag for short/ushort data files */
+	boolean shortData = false;
+	/** endianness */
+	ByteOrder byteOrder = ByteOrder.nativeOrder();
 
 	// RLE
 	private byte[] rleOverrun;
@@ -71,6 +78,7 @@ public class AmiraMeshDecoder {
 			Pattern firstLinePattern=Pattern.compile("^\\s*#.*AmiraMesh.*$");
 
 			while(true) {
+				IJ.showStatus( "Reading AmiraMesh file header..." );
 				if(!readPreambleLine())
 					return false;
 				if(firstLine) {
@@ -80,6 +88,10 @@ public class AmiraMeshDecoder {
 						throw new Exception("This doesn't look like an AmiraMesh file; the first line must be a comment containing the text 'AmiraMesh' or 'Avizo'.");
 					}
 					firstLine=false;
+					if( line.contains( "LITTLE-ENDIAN" ) )
+						byteOrder = ByteOrder.LITTLE_ENDIAN;
+					if( line.contains( "BIG-ENDIAN" ) )
+						byteOrder = ByteOrder.BIG_ENDIAN;
 				}
 				Matcher m=latticePattern.matcher(line);
 				if(m.matches()) {
@@ -100,12 +112,12 @@ public class AmiraMeshDecoder {
 			String parametersString = line;
 			while(readPreambleLine())
 				parametersString+=line+"\n";
-
+			IJ.showStatus( "Setting Amira parameters..." );
 			this.parameters=new AmiraParameters(parametersString);
 
 			if (mode == ASCII)
 				parseColumns(parametersString);
-
+			IJ.showStatus( "Checking enconding mode..." );
 			Pattern rlePattern=Pattern.compile(".*HxByteRLE.*",Pattern.DOTALL|Pattern.MULTILINE);
 			if(rlePattern.matcher(parametersString).matches())
 				mode = RLE;
@@ -129,6 +141,13 @@ public class AmiraMeshDecoder {
 			return false;
 		if (!readLine())
 			return false;
+		if( line.startsWith("Lattice {" ) )
+		{
+			if ( line.startsWith("Lattice { ushort" ) ||
+					line.startsWith("Lattice { short" ) )
+				this.shortData = true;
+			return true;
+		}
 		if(line!="" && line.charAt(0)=='@') {
 			try {
 				endOffsetOfPreamble=file.getFilePointer();
@@ -248,6 +267,7 @@ public class AmiraMeshDecoder {
 		if(file==null || endOffsetOfPreamble<0)
 			return null;
 		ImageStack stack;
+		int extra = shortData ? 2 : 1;
 		ColorModel colorModel=parameters.getColorModel();
 		if(colorModel==null)
 			stack=new ImageStack(width,height);
@@ -257,15 +277,15 @@ public class AmiraMeshDecoder {
 		try {
 			file.seek(endOffsetOfPreamble);
 			for(int z=0;z<numSlices;z++) {
-				buffer=new byte[width*height];
+				buffer=new byte[width*height*extra];
 				if(mode == RLE) {
-					int count,offset=0,length=width*height;
+					int count,offset=0,length=width*height*extra;
 					while((count=readRLE(buffer,offset,length))<length) {
 						offset+=count;
 						length-=count;
 					}
 				} else if(mode == ZLIB) {
-					int count,offset=0,length=width*height;
+					int count,offset=0,length=width*height*extra;
 					while((count=readZlib(buffer,offset,length))<length) {
 						if (count < 0)
 							break;
@@ -273,9 +293,17 @@ public class AmiraMeshDecoder {
 						length-=count;
 					}
 				} else
+					file.read(buffer,0,width*height*extra);
 
-				file.read(buffer,0,width*height);
-				stack.addSlice(null,buffer);
+				if( shortData )
+				{
+					short[] shortBuffer = new short[ width * height ];
+					ByteBuffer.wrap( buffer ).order( byteOrder ).asShortBuffer().get( shortBuffer );
+					stack.addSlice(null, shortBuffer );
+				}
+				else
+					stack.addSlice(null,buffer);
+				IJ.showStatus( "Reading slice " + (z+1) + "/" + numSlices +"...");
 				IJ.showProgress(z+1, numSlices);
 			}
 			
@@ -307,7 +335,8 @@ public class AmiraMeshDecoder {
 			return null;
 		// output stack
 		ImageStack stack;
-		
+		int extra = shortData ? 2 : 1;
+
 		ColorModel colorModel=parameters.getColorModel();
 		
 		if(colorModel==null)
@@ -321,7 +350,7 @@ public class AmiraMeshDecoder {
 		// read all pixel data from file at once
 		try {
 			file.seek(endOffsetOfPreamble);
-			int length = width * height * numSlices;
+			int length = width * height * numSlices * extra;
 			buffer = new byte[ length ];
 			
 			if(mode == RLE) {				
@@ -350,9 +379,16 @@ public class AmiraMeshDecoder {
 		// copy all pixel data to stack
 		if(null != buffer )
 			for( int z=0; z<numSlices; z++ ) {
-				byte[] pixels = new byte[ width * height ];
+				byte[] pixels = new byte[ width * height * extra ];
 				System.arraycopy( buffer, z*pixels.length, pixels, 0, pixels.length );
-				stack.addSlice( null, pixels );
+				if( shortData )
+				{
+					short[] shortBuffer = new short[ width * height ];
+					ByteBuffer.wrap( pixels ).order( byteOrder ).asShortBuffer().get( shortBuffer );
+					stack.addSlice( null, shortBuffer );
+				}
+				else
+					stack.addSlice( null, pixels);
 				IJ.showProgress( z+1, numSlices );
 			}
 		
